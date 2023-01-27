@@ -14,7 +14,9 @@ RUN yum update -y && \
     yum install -y postgres postgresql-devel && \
     yum install -y httpd && \
     yum install -y libcurl-develop httpd-devel gcc-c++ && \
-    yum install -y libcurl-devel
+    yum install -y libcurl-devel && \
+    yum install -y https://rpm.nodesource.com/pub_11.x/el/7/x86_64/nodesource-release-el7-1.noarch.rpm && \
+    yum install -y nodejs
 
 RUN cd /tmp/ && \
     git clone https://github.com/rbenv/rbenv.git /usr/local/rbenv && \
@@ -27,6 +29,7 @@ RUN cd /tmp/ && \
     echo 'eval "$(rbenv init -)"' >> /root/.bashrc && \
     rbenv install ${ruby_version} && \
     rbenv global ${ruby_version} && \
+    gem update --system 3.2.3 && \
     gem install bundler && \
     mkdir /opt/rails_${rails_version} && \
     cd /opt/rails_${rails_version}/ && \
