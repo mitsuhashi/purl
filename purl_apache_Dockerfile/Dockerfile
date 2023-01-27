@@ -1,4 +1,4 @@
-from centos:7
+from centos:7.7.1908
 
 #「rbenv install --list」コマンドで指定できるバージョンを確認
 ARG ruby_version="2.6.0"
@@ -18,7 +18,7 @@ RUN yum update -y && \
 
 RUN cd /tmp/ && \
     git clone https://github.com/rbenv/rbenv.git /usr/local/rbenv && \
-    git clone git://github.com/sstephenson/ruby-build.git /usr/local/rbenv/plugins/ruby-build && \
+    git clone https://github.com/sstephenson/ruby-build.git /usr/local/rbenv/plugins/ruby-build && \
     export RBENV_ROOT=/usr/local/rbenv && \
     export PATH="/usr/local/rbenv/bin:$PATH" && \
     eval "$(rbenv init -)" && \
