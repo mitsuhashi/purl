@@ -1,0 +1,2 @@
+class DomainWritersOneInfo < ApplicationRecord
+end

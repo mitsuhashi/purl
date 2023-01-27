@@ -1,0 +1,101 @@
+<!--
+  @brief
+  「PURLs」タブ内の親ページ
+-->
+<div class="row">
+  <div class="col-md-4">
+    <div class="panel panel-primary">
+      <div class="panel-heading"><b>Choose an action to take on PURLs</b></div>
+      <div class="panel-footer">
+
+        <p class="bg-info">
+          PURL administration options.
+        </p>
+
+        <form name="purls_select">
+          <!--
+          <select title="Pick a number" class="selectpicker"  onchange="purls_display_select(this)" id="purls_select">
+          -->
+          <select class="selectpicker" id="purls_select" onchange="purls_display_select(this)" autocomplete="off" onclick="reset_hidden();">
+            <option value="" selected>
+              --- Select your action ---
+            </option>
+            <option value="create">
+              Create a new PURL
+            </option>
+            <option value="advancedcreate">
+              Create an advanced PURL
+            </option>
+            <!--
+            <option value="modify">
+              Modify an existing PURL
+            </option>
+            -->
+            <option value="search">
+              Search for a PURL
+            </option>
+            <!--
+            <option value="delete">
+              Delete a PURL
+            </option>
+            -->          
+          </select>
+
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-6 col-md-offset-1">
+
+    <div class="panel panel-primary" id="purls-create" name="purls_operate" style="display: none;">
+      <div class="panel-heading"><b>Create a new PURL</b></div>
+      <div class="panel-footer">
+        <p class="bg-info">
+          Fill in the following information to create a new PURL. 
+        </p>
+        <% if (user_signed_in?) %>
+          <%= render :partial => 'purls_form1', locals: {operate_name: "purls-create"} %> 
+        <% else %>
+          <%= render :partial => 'nologin_form' %> 
+        <% end %> 
+      </div>
+    </div>
+
+    <!-- Advanced purl form -->
+    <%= render :partial => 'oneAdvPurl_form', locals: {mode: "new"} %>
+
+    <!-- 
+    <div class="panel panel-primary" id="purls-mod" name="purls_operate" style="display: none;">
+      <div class="panel-heading"><b>Modify a PURL</b></div>
+      <div class="panel-footer">
+        
+      </div>
+    </div>
+    -->
+
+    <div class="panel panel-primary" id="purls-search" name="purls_operate" style="display: none;">
+      <div class="panel-heading"><b><div id='purl_subtitle'>defined in 「reset_hidden.js」</div></b></div>
+      <div class="panel-footer">
+        <p class="bg-info" id='purl_subtext'>
+          defined in 「reset_hidden.js」
+        </p>
+        <%= render :partial => 'purls_search' %> 
+      </div>
+    </div>
+    
+    <div class="panel panel-primary" id="purls-vld" name="purls_operate" style="display: none;">
+      <div class="panel-heading"><b>Validate a PURL</b></div>
+      <div class="panel-footer">
+        <p class="bg-info">
+          Validate a PURL based on its path. 
+        </p>
+        <% if (user_signed_in?) %>
+          <%= render :partial => 'purls_form2', locals: {operate_name: "purls-vld"} %> 
+        <% else %>
+          <%= render :partial => 'nologin_form' %> 
+        <% end %> 
+      </div>
+    </div>
+  </div>
+</div>

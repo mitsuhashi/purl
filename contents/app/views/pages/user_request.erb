@@ -1,0 +1,84 @@
+<!--
+  @brief
+  承認待ちユーザーの一覧表示ページ
+-->
+
+<!DOCTYPE html>
+<html>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <head>
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+  </head>
+
+  <body>
+    <!--
+      SQL: <%= @debug_sql %>
+    -->
+
+    <% if @result.length != 0 %>
+      <% if @result_flag == true %>
+        <div class="alert alert-success">
+          <strong><%= @result %></strong>
+        </div>
+      <% else %>
+        <div class="alert alert-danger">
+          <strong><%= @result %></strong>
+        </div>
+      <% end %>
+    <% end %>
+
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Fullname</th>
+          <th scope="col">User ID</th>
+          <th scope="col">E-mail</th>
+          <th scope="col">Affiliation</th>
+          <th scope="col">Justification</th>
+          <th scope="col">Allow</th>
+          <th scope="col">Deny</th>
+        </tr>
+      </thead>
+  
+      <tbody>
+      <% @users.each do |user| %>
+        <tr>
+          <th scope="row"><%= user.id %></th>
+          <td><%= user.fullname %></td>
+          <td><%= user.username %></td>
+          <td><%= user.email %></td>
+          <td><%= user.affiliation %></td>
+          <td><%= user.justification %></td>
+          <td>
+            <% if current_user.try(:admin_flag?) == true %>
+              <%= form_tag '/page/user_request', :class => "form-inline", target: "result_panel" do %>
+                <input type="hidden" name="user_id" value="<%= user.id %>">
+                <input type="hidden" name="user_fullname" value="<%= user.fullname %>">
+                <input type="hidden" name="result" value="approve">
+
+                <button type="submit" class="btn btn-info">Approve</button>
+              <% end %>
+            <% end %>
+          </td>
+          <td>
+            <% if current_user.try(:admin_flag?) == true %>
+              <%= form_tag '/page/user_request', :class => "form-inline", target: "result_panel" do %>
+                <input type="hidden" name="user_id" value="<%= user.id %>">
+                <input type="hidden" name="user_fullname" value="<%= user.fullname %>">
+                <input type="hidden" name="result" value="deny">
+
+                <button type="submit" class="btn btn-warning" onClick="return user_deny();">Deny</button>
+              <% end %>
+            <% end %>
+          </td>
+        </tr> 
+      <% end %>
+      </tbody>
+    </table>
+  </body>
+</html>

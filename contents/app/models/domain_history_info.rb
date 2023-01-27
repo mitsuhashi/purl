@@ -1,0 +1,2 @@
+class DomainHistoryInfo < ApplicationRecord
+end

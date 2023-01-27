@@ -1,0 +1,112 @@
+<script>
+/* Cookieに開いたタブの情報を書き込む */
+$(document).ready(function() {
+
+    if ($('.nav-tabs').length) {
+
+    // for bootstrap 3 use 'shown.bs.tab', for bootstrap 2 use 'shown' in the next line
+    $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+        bootstrap_save_tab($(this).attr('href'));
+    });
+    bootstrap_restore_tab();
+
+    }
+
+});
+</script>
+
+<!--
+  @brief
+  PURLシステム全体の親ページ(indexページ)
+-->
+<% if @information.length != 0 %>
+  <div class="lert alert-dismissible alert-warning">
+    <%= simple_format(@information) %>
+  </div>
+<% end %>
+
+<h1>PURL</h1>
+
+<div>
+  <ul class="nav nav-tabs" role="tablist">
+
+    <li class="active" role="presentation">
+      <a aria-controls="tab_home" data-toggle="tab" href="#tab_home" role="tab" onclick="result_frame_clear();">HOME</a>
+    </li>
+
+    <li role="presentation">
+      <a aria-controls="tab_purls" data-toggle="tab" href="#tab_purls" role="tab" onclick="result_frame_clear();">PURLs</a>
+    </li>
+
+    <li role="presentation">
+      <a aria-controls="tab_users" data-toggle="tab" href="#tab_users" role="tab" onclick="result_frame_clear();">Users</a>
+    </li>
+
+    <li role="presentation">
+      <a aria-controls="tab_groups" data-toggle="tab" href="#tab_groups" role="tab" onclick="result_frame_clear();">Groups</a>
+    </li>
+
+    <li role="presentation">
+      <a aria-controls="tab_domains" data-toggle="tab" href="#tab_domains" role="tab" onclick="result_frame_clear();">Domains</a>
+    </li>
+
+    <li role="presentation">
+      <a aria-controls="tab_admin" data-toggle="tab" href="#tab_admin" role="tab" onclick="result_frame_clear();">Admin</a>
+    </li>
+    
+    <li role="presentation">
+      <a aria-controls="tab_help" id="help_page" data-toggle="tab" href="#tab_help" role="tab" onclick="result_frame_clear();">Help</a>
+    </li>
+  </ul>
+  <div class="tab-content">
+
+    <div class="tab-pane active" id="tab_home" role="tabpanel">
+      <p>
+        <%= render :partial => 'home' %>
+      </p>
+    </div>
+
+    <div class="tab-pane" id="tab_purls" role="tabpanel">
+      <p>
+        <%= render :partial => 'purls' %>
+      </p>
+    </div>
+
+    <div class="tab-pane" id="tab_users" role="tabpanel">
+      <p>
+        <%= render :partial => 'users' %>
+      </p>
+    </div>
+    
+    <div class="tab-pane" id="tab_groups" role="tabpanel">
+      <p>
+        <%= render :partial => 'groups' %>
+      </p>
+    </div>
+
+    <div class="tab-pane" id="tab_domains" role="tabpanel">
+      <p>
+        <%= render :partial => 'domains' %>
+      </p>
+    </div>
+    
+    <div class="tab-pane" id="tab_help" role="tabpanel">
+      <p>
+        <%= render :partial => 'help' %>
+      </p>
+    </div>
+
+    <div class="tab-pane" id="tab_admin" role="tabpanel">
+      <p>
+        <%= render :partial => 'admin' %>
+      </p>
+    </div>
+
+  </div>
+</div>
+
+<iframe id="result_panel" name="result_panel" width="100%" class="result_frame">
+<!--
+結果表示用フレーム
+-->
+</iframe>

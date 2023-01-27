@@ -1,0 +1,110 @@
+<!--
+  @brief
+  グループの検索結果の表示ページ
+-->
+
+<!DOCTYPE html>
+<html>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <head>
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+  </head>
+
+  <body>
+    <!--
+      SQL: <%= @debug_sql %>
+      GROUP_SEARCH_DEBUG:
+      <%= @debug %>
+    -->
+    <%= button_tag "Back", class: "btn btn-secondary", onclick: "history.back()" %>
+    <br>
+    <br>
+    <p class="alert alert-warning">Record with grey background color are invalid data</p>
+
+    <%= paginate @users %>
+    <table class="table">
+      <thead>
+        <tr class="info">
+          <th scope="col">#</th>
+          <th scope="col">Name</th>
+          <th scope="col">Group ID</th>
+          <th scope="col">Maintainer IDs</th>
+          <th scope="col">Writer IDs</th>
+          <th scope="col">Modify?</th>
+          <th scope="col">Status</th>
+          <th scope="col">History</th>
+        </tr>
+      </thead>
+  
+      <tbody>
+      <% @users.each do |user| %>
+        <%  
+            if user.disable_flag == false
+              tr_class = ""
+              ds_style = ""
+            else
+              tr_class = "active"
+              ds_style = "text-decoration: line-through;"
+            end
+        %>
+        <tr class=<%= tr_class %>>
+          <th scope="row"><%= user.id %></th>
+          <td style="<%= ds_style %>"><%= user.fullname %></td>
+          <td style="<%= ds_style %>"><%= user.username %></td>
+          <td style="<%= ds_style %>"><%= user.maintainer_names %></td>
+          <td style="<%= ds_style %>"><%= user.member_names %></td>
+          <td>
+            <% if current_user.try(:admin_flag?) == true || @readonlys[user.username] == false %>
+              <!-- Javascript call -->
+              <form action="#">
+                <input type="hidden" id="edit_groupid_<%= user.id %>" value="<%= user.id %>">
+                <input type="hidden" id="edit_fullname_<%= user.id %>" value="<%= user.fullname %>">
+                <input type="hidden" id="edit_username_<%= user.id %>" value="<%= user.username %>">
+                <input type="hidden" id="edit_maintainers_<%= user.id %>" value="<%= user.maintainer_names.sub(',', "\n") %>">
+                <input type="hidden" id="edit_writers_<%= user.id %>" value="<%= user.member_names.sub(',', "\n") %>">
+                <input type="hidden" id="edit_group_comment_<%= user.id %>" value="<%= user.comment %>">
+                <input type="hidden" id="edit_group_flag_<%= user.id %>" value="<%= user.group_flag %>">
+                <input type="hidden" id="edit_allowed_to_log_in_<%= user.id %>" value="<%= user.allowed_to_log_in %>">
+
+                <button type="submit" class="btn btn-success" onclick="send_group_edit(<%= user.id %>); return false;">Modify</button>
+              </form>
+            <% end %>
+          </td>
+          <td>
+            <% if current_user.try(:admin_flag?) == true || @readonlys[user.username] == false %>
+              <!-- Javascript call -->
+              <form action="#">
+                <input type="hidden" id="chg_groupid_<%= user.id %>" value="<%= user.id %>">
+                <input type="hidden" id="chg_fullname_<%= user.id %>" value="<%= user.fullname %>">
+                <input type="hidden" id="chg_username_<%= user.id %>" value="<%= user.username %>">
+                <input type="hidden" id="chg_maintainers_<%= user.id %>" value="<%= user.maintainer_names.sub(',', "\n") %>">
+                <input type="hidden" id="chg_writers_<%= user.id %>" value="<%= user.member_names.sub(',', "\n") %>">
+                <input type="hidden" id="chg_group_comment_<%= user.id %>" value="<%= user.comment %>">
+                <input type="hidden" id="chg_group_flag_<%= user.id %>" value="<%= user.group_flag %>">
+                <input type="hidden" id="edit_allowed_to_log_in_<%= user.id %>" value="<%= user.allowed_to_log_in %>">
+
+                <% if user.disable_flag == false %>
+                  <button type="submit" class="btn btn-warning" onclick="send_group_disable(0, <%= user.id %>); return false;">Change</button>
+                <% else %>
+                  <button type="submit" class="btn btn-warning" onclick="send_group_disable(1, <%= user.id %>); return false;">Change</button>
+                <% end %>
+              </form>
+            <% end %>
+          </td>
+          <td>
+            <%= form_tag '/page/group_history', :method => :post, target: "result_panel" do %>
+              <input type="hidden" name="history_groupid" value="<%= user.id %>">
+              <%= submit_tag 'History' , class: 'btn btn-info btn-block' %>
+            <% end %>
+          </td>
+        </tr> 
+      <% end %>
+      </tbody>
+    </table>
+    <%= paginate @users %>
+  </body>
+</html>

@@ -1,0 +1,59 @@
+<!--
+  @brief
+  「Groups」タブ内の親ページ
+-->
+<!-- 画面分割 -->
+<div class="row">
+  <div class="col-md-4">
+    <div class="panel panel-primary">
+      <div class="panel-heading"><b>Choose an action to take on groups</b></div>
+      <div class="panel-footer">
+
+        <p class="bg-info">
+          Group administration options.
+        </p>
+
+        <form name="groups_select">
+          <select class="selectpicker" id="groups_select" onchange="groups_display_select(this)" autocomplete="off" onclick="reset_hidden();">
+            <option value="" selected>
+              --- Select your action ---
+            </option>
+            <option value="create">
+              Register a new group
+            </option>
+            <option value="search">
+              Search for a group
+            </option>
+          </select>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-6 col-md-offset-1">
+
+    <div class="panel panel-primary" id="groups-create" name="groups_operate" style="display: none;">
+      <div class="panel-heading"><b>Register a new group</b></div>
+      <div class="panel-footer">
+        <p class="bg-info">
+           Fill in the following information to create a new group. 
+        </p>
+        <% if (user_signed_in?) %>
+          <%= render :partial => 'oneGroup_form', locals: { mode: "new"} %> 
+        <% else %>
+          <%= render :partial => 'nologin_form' %>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="panel panel-primary" id="groups-search" name="groups_operate" style="display: none;">
+      <div class="panel-heading"><b><div id='group_subtitle'>defined in 「reset_hidden.js」</div></b></div>
+      <div class="panel-footer">
+        <p class="bg-info" id='group_subtext'>
+          defined in 「reset_hidden.js」 
+        </p>
+        <%= render :partial => 'groups_search' %> 
+      </div>
+    </div>
+  </div>
+</div>

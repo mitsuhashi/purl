@@ -1,0 +1,13 @@
+<!--
+  @brief
+  validate PURLの入力フォーム
+-->
+<%= form_for @newpurl, :html => {:class => "form-inline", target: "result_panel"}, :url => {:action => :purl_commit} do |f| %>
+  <div class="input-group">
+    <span class="input-group-text">Path: </span>
+    <%= f.text_field :path, class: "form-control", id: "#{operate_name}_purls_path", maxlength: 4000 %>
+  </div>
+  <br>
+  <br>
+  <%= submit_tag 'Submit' , class: 'btn btn-primary btn-block', name: "#{operate_name}_purls_submit" %>
+<% end %>

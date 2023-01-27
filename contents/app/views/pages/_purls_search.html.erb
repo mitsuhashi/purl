@@ -1,0 +1,60 @@
+<!--
+  @brief
+  PURLの検索の入力フォーム
+-->
+<div id="purl_search_form1">
+  <%= form_tag '/page/purl_search_results', :class => "form-inline", target: "result_panel" do %>
+    <div class="input-group">
+      <span class="input-group-text">Path: </span>
+      <%= text_field "purls_search_path", "", class: "form-control", maxlength: 4000 %>
+    </div>
+    <br>
+    <b>or</b>
+    <br>
+    <div class="input-group">
+      <span class="input-group-text">Target URL: </span>
+      <%= text_field "purls_search_target", "", class: "form-control", maxlength: 4000 %>
+    </div>
+    <br>
+    <b>or</b>
+    <br>
+    <div class="input-group">
+    <span class="input-group-text">See Also URL: </span>
+      <%= text_field "purls_search_see_also", "", class: "form-control", maxlength: 4000 %>
+    </div>
+    <br>
+    <b>or</b>
+    <br>
+    <div class="input-group">
+      <span class="input-group-text">Maintainers ID (expands groups): </span>
+      <%= text_field "purls_search_maintainers_ids", "", class: "form-control", maxlength: 4000 %>
+    </div>
+    <br>
+    <b>or</b>
+    <br>
+    <div class="input-group">
+      <span class="input-group-text">Explicit Maintainers ID (does not expand groups): </span>
+      <%= text_field "purls_search_exp_maintainers_ids", "", class: "form-control", maxlength: 4000 %>
+    </div>
+    <br>
+    <br>
+      <span class="input-group-text">Search disabled PURLs: </span>
+    <%= check_box_tag :purls_search_disabled %>
+    <br>
+    <br>
+    <% if current_user.try(:admin_flag?) == true %>  
+      <span class="input-group-text">All purls (Admin only): </span>
+      <%= check_box_tag :purl_search_all %>
+    <% end %>
+    <br>
+    <br>
+    <%= submit_tag 'Search' , class: 'btn btn-primary btn-block', name: "purls_search" %>
+  <% end %>
+</div>
+
+<div id="purl_search_form2" style="display: none;">
+  <%= render :partial => 'purls_form3', locals: {mode: 'modify'} %>
+</div>
+<div id="purl_search_form3" style="display: none;">
+  <%= render :partial => 'purls_form3', locals: {mode: 'chgstate'} %>
+</div>

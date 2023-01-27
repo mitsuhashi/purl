@@ -1,0 +1,2 @@
+class PurlHistoryInfo < ApplicationRecord
+end

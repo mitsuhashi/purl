@@ -1,0 +1,58 @@
+<!--
+  @brief
+  「Domains」タブ内の親ページ
+-->
+<div class="row">
+  <div class="col-md-4">
+    <div class="panel panel-primary">
+      <div class="panel-heading"><b>Choose an action to take on domains</b></div>
+      <div class="panel-footer">
+
+        <p class="bg-info">
+          Domain administration options.
+        </p>
+
+        <form name="domains_select">
+          <select class="selectpicker" id="domains_select" onchange="domains_display_select(this)" autocomplete="off" onclick="reset_hidden();">
+            <option value="" selected>
+              --- Select your action ---
+            </option>
+            <option value="create">
+              Create a new domain
+            </option>
+            <option value="search">
+              Search for a domain
+            </option>
+          </select>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-6 col-md-offset-1">
+
+    <div class="panel panel-primary" id="domains-create" name="domains_operate" style="display: none;">
+      <div class="panel-heading"><b>Create a new domain</b></div>
+      <div class="panel-footer">
+        <p class="bg-info">
+          Fill in the following information to create a new domain. 
+        </p>
+        <% if (user_signed_in?) %>
+          <%= render :partial => 'oneDomain_form', locals: {mode: 'new'} %> 
+        <% else %>
+          <%= render :partial => 'nologin_form' %>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="panel panel-primary" id="domains-search" name="domains_operate" style="display: none;">
+      <div class="panel-heading" ><b><div id='domain_subtitle'>defined in 「reset_hidden.js」</div></b></div>
+      <div class="panel-footer">
+        <p class="bg-info" id='domain_subtext'>
+          defined in 「reset_hidden.js」
+        </p>
+        <%= render :partial => 'domains_search' %> 
+      </div>
+    </div>
+  </div>
+</div>

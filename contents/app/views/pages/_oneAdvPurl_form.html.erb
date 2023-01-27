@@ -1,0 +1,20 @@
+<!--
+  @brief
+  advanced purlが選択された時に表示するページ
+  
+  @detail
+  入力フォームとログインしていない時のメッセージを表示する．
+-->
+<div class="panel panel-primary" id="<%= mode %>_purls-adv-create" name="<%= mode %>_purls-adv-create" style="display: none;">
+  <div class="panel-heading"><b>Create an advanced PURL</b></div>
+  <div class="panel-footer">
+    <p class="bg-info">
+      Fill in the following information to create a new PURL. 
+    </p>
+    <% if (user_signed_in?) %>
+      <%= render :partial => 'purls_form3', locals: {mode: mode} %>  
+    <% else %>
+      <%= render :partial => 'nologin_form' %>  
+    <% end %>  
+  </div>
+</div>

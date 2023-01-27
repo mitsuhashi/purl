@@ -1,0 +1,2 @@
+class GroupMaintainersOneInfo < ApplicationRecord
+end

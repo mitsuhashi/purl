@@ -1,0 +1,112 @@
+<!--
+  @brief
+  ドメインの検索結果の表示ページ
+-->
+<!DOCTYPE html>
+<html>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <head>
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+  </head>
+
+  <body>
+    <!--
+      SQL: <%= @debug_sql %>
+    -->
+    <%= button_tag "Back", class: "btn btn-secondary", onclick: "history.back()" %>
+    <br>
+    <br>
+    <p class="alert alert-warning">Record with grey background color are invalid data</p>
+
+    <%= paginate @domains %>
+    <table class="table">
+      <thead>
+        <tr class="info">
+          <th scope="col">#</th>
+          <th scope="col">Name</th>
+          <th scope="col">Domain ID</th>
+          <th scope="col">Maintainer IDs</th>
+          <th scope="col">Writer IDs</th>
+          <th scope="col">Public?</th>
+          <th scope="col">Modify?</th>
+          <th scope="col">Status</th>
+          <th scope="col">History</th>
+        </tr>
+      </thead>
+  
+      <tbody>
+      <% @domains.each do |domain| %>
+        <%  
+            if domain.disable_flag == false
+              tr_class = ""
+              ds_style = ""
+            else
+              tr_class = "active"
+              ds_style = "text-decoration: line-through;"
+            end
+        %>
+        <%
+          if domain.writer_names == nil
+            domain.writer_names = ''
+          end
+        %>
+        <tr class=<%= tr_class %>>
+          <th scope="row"><%= domain.id %></th>
+          <td style="<%= ds_style %>"><%= domain.name %></td>
+          <td style="<%= ds_style %>"><%= domain.domain_id %></td>
+          <td style="<%= ds_style %>"><%= domain.maintainer_names %></td>
+          <td style="<%= ds_style %>"><%= domain.writer_names %></td>
+          <td style="<%= ds_style %>"><%= domain.public_flag %></td>
+          <td>
+            <% if current_user.try(:admin_flag?) == true || @readonlys[domain.id] == false %>
+              <!-- Javascript call -->
+              <form action="#">
+                <input type="hidden" id="edit_did_<%= domain.id %>" value="<%= domain.id %>">
+                <input type="hidden" id="edit_domainname_<%= domain.id %>" value="<%= domain.name %>">
+                <input type="hidden" id="edit_domainid_<%= domain.id %>" value="<%= domain.domain_id %>">
+                <input type="hidden" id="edit_maintainers_<%= domain.id %>" value="<%= domain.maintainer_names.sub(',', "\n") %>">
+                <input type="hidden" id="edit_writers_<%= domain.id %>" value="<%= domain.writer_names.sub(',', "\n") %>">
+                <input type="hidden" id="edit_public_flag_<%= domain.id %>" value="<%= domain.public_flag %>">
+                <input type="hidden" id="edit_new_flag_<%= domain.id %>" value="<%= domain.new_flag %>">
+                <button type="submit" class="btn btn-success" onclick="send_domain_edit(<%= domain.id %>); return false;">Modify</button>
+              </form>
+            <% end %>
+          </td>
+          <td>
+            <% if current_user.try(:admin_flag?) == true || @readonlys[domain.id] == false %>
+              <!-- Javascript call -->
+              <form action="#">
+                <input type="hidden" id="chg_did_<%= domain.id %>" value="<%= domain.id %>">
+                <input type="hidden" id="chg_domainname_<%= domain.id %>" value="<%= domain.name %>">
+                <input type="hidden" id="chg_domainid_<%= domain.id %>" value="<%= domain.domain_id %>">
+                <input type="hidden" id="chg_maintainers_<%= domain.id %>" value="<%= domain.maintainer_names.sub(',', "\n") %>">
+                <input type="hidden" id="chg_writers_<%= domain.id %>" value="<%= domain.writer_names.sub(',', "\n") %>">
+                <input type="hidden" id="chg_public_flag_<%= domain.id %>" value="<%= domain.public_flag %>">
+                <input type="hidden" id="chg_new_flag_<%= domain.id %>" value="<%= domain.new_flag %>">
+
+                <% if domain.disable_flag == false %>
+                  <button type="submit" class="btn btn-warning" onclick="send_domain_disable(0, <%= domain.id %>); return false;">Change</button>
+                <% else %>
+                  <button type="submit" class="btn btn-warning" onclick="send_domain_disable(1, <%= domain.id %>); return false;">Change</button>
+                <% end %>
+              </form>
+            <% end %>
+          </td>
+          <td>
+            <%= form_tag '/page/domain_history', :method => :post, target: "result_panel" do %>
+              <input type="hidden" name="history_domainid" value="<%= domain.id %>">
+              <%= submit_tag 'History' , class: 'btn btn-info btn-block' %>
+            <% end %>
+          </td>
+
+        </tr> 
+      <% end %>
+      </tbody>
+    </table>
+    <%= paginate @domains %>
+  </body>
+</html>

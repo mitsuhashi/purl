@@ -1,0 +1,30 @@
+if Rails.env.production?
+  ActionMailer::Base.delivery_method = :smtp
+  ActionMailer::Base.raise_delivery_errors = true
+  ActionMailer::Base.smtp_settings = {
+    address: 'smtpa.jcom.zaq.ne.jp',
+    domain: 'jcom.zaq.ne.jp',
+    port: 465,
+    user_name: '[ユーザー名]',
+    password: '[パスワード]',
+    authentication: 'login',
+    enable_starttls_auto: true
+}
+elsif Rails.env.development?
+  ActionMailer::Base.delivery_method = :smtp
+  ActionMailer::Base.raise_delivery_errors = true
+  ActionMailer::Base.smtp_settings = {
+    address: 'smtpa.jcom.zaq.ne.jp',
+    domain: 'jcom.zaq.ne.jp',
+    port: 465,
+    user_name: '[ユーザー名]',
+    password: '[パスワード]',
+    authentication: 'login',
+    ssl: false,
+    tls: true,
+    enable_starttls_auto: true
+  }
+  #ActionMailer::Base.delivery_method = :letter_opener
+else
+  ActionMailer::Base.delivery_method = :test
+end

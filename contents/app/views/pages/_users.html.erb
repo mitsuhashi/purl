@@ -1,0 +1,54 @@
+<!--
+  @brief
+  「Users」タブ内の親ページ
+-->
+<div class="row">
+  <div class="col-md-4">
+    <div class="panel panel-primary">
+      <div class="panel-heading"><b>Choose an action to take on users</b></div>
+      <div class="panel-footer">
+
+        <p class="bg-info">
+          User administration options.
+        </p>
+
+        <form name="users_select">
+          <select class="selectpicker" id="users_select" onchange="users_display_select(this)" autocomplete="off" onclick="reset_hidden();">
+            <option value="" selected>
+              --- Select your action ---
+            </option>
+            <option value="register">
+              Register a new user
+            </option>
+            <option value="search">
+              Search for a user
+            </option>
+          </select>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-6 col-md-offset-1">
+
+    <div class="panel panel-primary" id="users-register" name="users_operate" style="display: none;">
+      <div class="panel-heading"><b>Register a new user</b></div>
+      <div class="panel-footer">
+        <p class="bg-info">
+          Fill in the following information to create a new user.
+        </p>
+        <%= render :partial => 'oneUser_form', locals: {mode: "new"} %> 
+      </div>
+    </div>
+
+    <div class="panel panel-primary" id="users-search" name="users_operate" style="display: none;">
+      <div class="panel-heading"><b><div id='user_subtitle'>defined in 「reset_hidden.js」</div></b></div>
+      <div class="panel-footer">
+        <p class="bg-info" id='user_subtext'>
+          defined in 「reset_hidden.js」
+        </p>
+        <%= render :partial => 'users_search' %> 
+      </div>
+    </div>
+  </div>
+</div>

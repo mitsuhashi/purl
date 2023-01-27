@@ -1,0 +1,124 @@
+<!--
+  @brief
+  PURLの検索結果の表示ページ
+-->
+
+<!DOCTYPE html>
+<html>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <head>
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+  </head>
+
+  <body>
+    <!--
+      SQL: <%= @debug_sql %>
+    -->
+
+    <%= button_tag "Back", class: "btn btn-secondary", onclick: "history.back()" %>
+    <br>
+    <br>
+
+    <% if @message_flag == true %>
+      <%= simple_format(@result) %>
+    <% end %>
+
+    <p class="alert alert-warning">Record with grey background color are invalid data</p>
+    <%= paginate @purls %>
+    <table class="table">
+      <thead>
+        <tr class="info">
+          <th scope="col">#</th>
+          <th scope="col">Value</th>
+          <th scope="col">Maintainer IDs</th>
+          <th scope="col">Type</th>
+          <th scope="col">Modify?</th>
+          <th scope="col">Status</th>
+          <th scope="col">History</th>
+          <th scope="col">Validate</th>
+        </tr>
+      </thead>
+      <tbody>
+      <% @purls.each do |purl| %>
+        <%  
+            if purl.disable_flag == false
+              tr_class = ""
+              ds_style = ""
+            else
+              tr_class = "active"
+              ds_style = "text-decoration: line-through;"
+            end
+        %>
+        <tr class=<%= tr_class %>>
+          <th scope="row"><%= purl.id %></th>
+          <td>
+          <table border="0px">
+            <tr><td align="right" style="<%= ds_style %>"><strong>Path:&nbsp;</strong></td><td style="<%= ds_style %>"><%= purl.path %></td></tr>
+            <tr><td align="right" style="<%= ds_style %>"><strong>Target:&nbsp;</strong></td><td style="<%= ds_style %>"> <%= purl.target %></td></tr>
+            <tr><td align="right" style="<%= ds_style %>"><strong>See Also URL:&nbsp;</strong></td><td style="<%= ds_style %>"><%= purl.see_also_url %></td></tr>
+            <tr><td align="right" style="<%= ds_style %>"><strong>Clone or Chain:&nbsp;</strong></td><td style="<%= ds_style %>"><%= purl.clone_path %></td></tr>
+          </table>
+          </td>
+          <td style="<%= ds_style %>"><%= purl.maintainer_names %></td>
+          <td style="<%= ds_style %>"><%= purl.rd_type %></td>
+          <td>
+            <% if current_user.try(:admin_flag?) == true || @readonlys[purl.id] == false %>
+              <!-- Javascript call -->
+              <form action="#">
+                <input type="hidden" id="edit_purl_id_<%= purl.id %>" value="<%= purl.id %>">
+                <input type="hidden" id="edit_path_<%= purl.id %>" value="<%= purl.path %>">
+                <input type="hidden" id="edit_target_<%= purl.id %>" value="<%= purl.target %>">
+                <input type="hidden" id="edit_see_also_url_<%= purl.id %>" value="<%= purl.see_also_url %>">
+                <input type="hidden" id="edit_clone_<%= purl.id %>" value="<%= purl.clone_path %>">
+                <input type="hidden" id="edit_disable_flag_<%= purl.id %>" value="<%= purl.disable_flag %>">
+                <input type="hidden" id="edit_maintainers_<%= purl.id %>" value="<%= purl.maintainer_names.sub(',', "\n") %>">
+                <input type="hidden" id="edit_redirect_type_sym_<%= purl.id %>" value="<%= purl.symbol %>">
+
+                <button type="submit" class="btn btn-success" onclick="send_purl_edit(<%= purl.id %>); return false;">Modify</button>
+              </form>
+            <% end %>
+          </td>
+          <td>
+            <% if current_user.try(:admin_flag?) == true || @readonlys[purl.id] == false %>
+              <!-- Javascript call -->
+              <form action="#">
+                <input type="hidden" id="chg_purl_id_<%= purl.id %>" value="<%= purl.id %>">
+                <input type="hidden" id="chg_path_<%= purl.id %>" value="<%= purl.path %>">
+                <input type="hidden" id="chg_target_<%= purl.id %>" value="<%= purl.target %>">
+                <input type="hidden" id="chg_see_also_url_<%= purl.id %>" value="<%= purl.see_also_url %>">
+                <input type="hidden" id="chg_clone_<%= purl.id %>" value="<%= purl.clone_path %>">
+                <input type="hidden" id="chg_disable_flag_<%= purl.id %>" value="<%= purl.disable_flag %>">
+                <input type="hidden" id="chg_maintainers_<%= purl.id %>" value="<%= purl.maintainer_names.sub(',', "\n") %>">
+                <input type="hidden" id="chg_redirect_type_sym_<%= purl.id %>" value="<%= purl.symbol %>">
+                
+                <% if purl.disable_flag == false %>
+                  <button type="submit" class="btn btn-warning" onclick="send_purl_disable(0, <%= purl.id %>); return false;">Change</button>
+                <% else %>
+                  <button type="submit" class="btn btn-warning" onclick="send_purl_disable(1, <%= purl.id %>); return false;">Change</button>
+                <% end %>
+              </form>
+            <% end %>
+          </td>
+          <td>
+            <%= form_tag '/page/purl_history', :method => :post, target: "result_panel" do %>
+              <input type="hidden" name="history_purlid" value="<%= purl.id %>">
+              <%= submit_tag 'History' , class: 'btn btn-info btn-block' %>
+            <% end %>
+          </td>
+          <td>
+            <%= form_tag '/page/purl_validate', :method => :post, target: "result_panel" do %>
+              <input type="hidden" name="validate_purlid" value="<%= purl.id %>">
+              <%= submit_tag 'Validate' , class: 'btn btn-primary btn-block' %>
+            <% end %>
+          </td>
+        </tr> 
+      <% end %>
+      </tbody>
+    </table>
+    <%= paginate @purls %>
+  </body>
+</html>

@@ -1,0 +1,60 @@
+<!--
+  @brief
+  advanced PURLの入力フォーム
+-->
+<%= form_for @newpurl, :html => {:class => "form-inline", target: "result_panel"}, :url => {:action => :purl_commit} do |f| %>
+  <div class="input-group">
+    <span class="input-group-text">Path: </span>
+    <%= f.text_field :path, id: "#{mode}_adv_path", class: "form-control", maxlength: 4000 %>
+  </div>
+  <br>
+  <div class="input-group">
+    <span class="input-group-text">Type of PURL: </span>
+    <br>
+    <%= select_tag :purl_type, options_for_select([["-- Select your type --", ""], ["Simple redirection to a target URL (302)", "#{mode}_302"], ["Moved permanently to a target URL (301)", "#{mode}_301"], ["See other URLs (use for Semantic Web resources) (303)", "#{mode}_303"], ["Temporary redirect to a target URL (307)", "#{mode}_307"], ["Temporarily gone (404)", "#{mode}_404"], ["Permanently gone (410)", "#{mode}_410"], ["Clone an existing PURL", "#{mode}_clone"], ["Chain an existing PURL", "#{mode}_chain"], ["Partial-redirect PURL", "#{mode}_partial"], ["Partial-redirect PURL with appended file extension(s)", "#{mode}_partial-append-extension"], ["Partial-redirect PURL with ignored file extension(s)", "#{mode}_partial-ignore-extension"], ["Partial-redirect PURL with replaced file extension(s)", "#{mode}_partial-replace-extension"]]), class: "selectpicker", id: "#{mode}_adv-select", onchange: "adv_display_select(#{user_signed_in?}, '#{mode}')", autocomplete: "off", style: "max-width:80%" %>
+  </div>
+  <br>
+
+  <input type="hidden" id="<%= mode %>_adv_purl_id" name="<%= mode %>_adv_purl_id" value="-1">
+
+  <div id="<%= mode %>_adv_target_hidden" class="<%= mode %>_adv-form" style="display: none;">
+    <div class="input-group">
+      <span class="input-group-text">Target: </span>
+      <%= f.text_field :target, id: "#{mode}_adv_target", class: "form-control", maxlength: 4000 %>
+    </div>
+    <br>
+  </div>
+  <div id="<%= mode %>_adv_clone_hidden" class="<%= mode %>_adv-form" style="display: none;">
+    <div class="input-group" id="<%= mode %>_adv_clone_hidden">
+      <span class="input-group-text">Existing PURL path: </span>
+      <%= text_field "adv_clone", "", class: "form-control", id: "#{mode}_adv_clone", maxlength: 4000 %>
+    </div>
+    <br>
+  </div>
+  <div id="<%= mode %>_adv_maintainer_ids_hidden" class="<%= mode %>_adv-form" style="display: none;">
+    <div class="input-group">
+      <span class="input-group-text">Maintainer IDs (one per line): </span>
+      <%= text_area "adv_maintainer_ids", "", class: "form-control", id: "#{mode}_adv_maintainer_ids", maxlength:4000, cols: 400%>
+    </div>
+    <br>
+  </div>
+  <div id="<%= mode %>_adv_see_also_hidden" class="<%= mode %>_adv-form" style="display: none;">
+    <div class="input-group">
+      <span class="input-group-text">See Also URL: </span>
+      <%= f.text_field :see_also_url, id: "#{mode}_adv_see_also", class: "form-control", maxlength: 4000 %>
+    </div>
+    <br>
+  </div>
+  <div id="<%= mode %>_adv_chain_hidden" class="<%= mode %>_adv-form" style="display: none;">
+    <div class="input-group" id="<% mode %>_adv_chain_hidden">
+      <span class="input-group-text">Existing PURL path: </span>
+      <%= text_field "adv_chain", "", class: "form-control", id: "#{mode}_adv_chain", maxlength: 4000 %>
+    </div>
+    <br>
+  </div>
+
+  <br>
+  <div id="<%= mode %>_adv_purls_submit_hidden" style="display: none;">
+    <%= submit_tag 'Submit' , class: 'btn btn-primary btn-block', name: "adv_purls_submit", id: "#{mode}_adv_purls_submit" %>
+  </div>
+<% end %>

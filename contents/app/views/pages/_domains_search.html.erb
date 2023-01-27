@@ -1,0 +1,55 @@
+<!--
+  @brief
+  ドメインの検索の入力フォーム
+-->
+<div id="domain_search_form1">
+  <%= form_tag '/page/domain_search_results', :class => "form-inline", target: "result_panel" do %>
+    <div class="input-group">
+      <span class="input-group-text">Name: </span>
+      <%= text_field "domain_search_name", "", class: "form-control", maxlength: 255 %>
+    </div>
+    <br>
+    <b>or</b>
+    <br>
+    <div class="input-group">
+      <span class="input-group-text">Domain ID: </span>
+      <%= text_field "domain_search_domainid", "", class: "form-control", maxlength: 4000 %>
+    </div>
+    <br>
+    <b>or</b>
+    <br>
+    <div class="input-group">
+      <span class="input-group-text">Maintainers ID (expands groups): </span><br>
+      <%= text_field "domain_search_maintainer_ids", "", class: "form-control", maxlength: 255 %>
+    </div>
+    <br>
+    <b>or</b>
+    <br>
+    <div class="input-group">
+      <span class="input-group-text">Writers ID (does not expand groups): </span><br>
+      <%= text_field "domain_search_writer_ids", "", class: "form-control", maxlength: 255 %>
+    </div>
+    <br>
+    <br>
+      <span class="input-group-text">Search disabled domains: </span>
+    <%= check_box_tag :domain_search_disabled %>
+    <br>
+    <br>
+    <% if current_user.try(:admin_flag?) == true %>  
+      <span class="input-group-text">All domains (Admin only): </span>
+      <%= check_box_tag :domain_search_all %>
+    <% end %>
+    <br>
+    <br>
+    <%= submit_tag 'Search' , class: 'btn btn-primary btn-block', name: "domains_search_results" %>
+  <% end %>
+</div>
+
+<div id="domain_search_form2" style="display: none;">
+  <%= render :partial => 'oneDomain_form', locals: {mode: 'modify'} %>
+</div>
+
+<div id="domain_search_form3" style="display: none;">
+  <%= render :partial => 'oneDomain_form', locals: {mode: 'chgstate'} %>
+</div>
+

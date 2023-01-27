@@ -1,0 +1,55 @@
+<!--
+  @brief
+  ユーザーの検索の入力フォーム
+-->
+<div id="user_search_form1">
+<%= form_tag '/page/user_search_results', :class => "form-inline", target: "result_panel" do %>
+
+  <div class="input-group">
+    <span class="input-group-text">Full name: </span>
+    <%= text_field "user_search_fullname", "", class: "form-control" %>
+  </div>
+  <br>
+  <b>or</b>
+  <br>
+  <div class="input-group">
+    <span class="input-group-text">Affiliation: </span>
+    <%= text_field "user_search_affiliation", "", class: "form-control" %>
+  </div>
+  <br>
+  <b>or</b>
+  <br>
+  <div class="input-group">
+    <span class="input-group-text">E-mail address: </span>
+    <%= email_field "user_search_email", "", class: "form-control" %>
+  </div>
+  <br>
+  <b>or</b>
+  <br>
+  <div class="input-group">
+    <span class="input-group-text">User ID: </span>
+    <%= text_field "user_search_userid", "", class: "form-control" %>
+  </div>
+  <br>
+  <br>
+  <span class="input-group-text">Search disabled users: </span>
+  <%= check_box_tag :user_search_disabled %>
+  <br>
+  <br>
+  <% if current_user.try(:admin_flag?) == true %>  
+    <span class="input-group-text">All users (Admin only): </span>
+    <%= check_box_tag :user_search_all %>
+  <% end %>
+  <br>
+  <br>
+  <%= submit_tag 'Search' , class: 'btn btn-primary btn-block', name: "users_search" %>
+<% end %>
+</div>
+
+<div id="user_search_form2" style="display: none;">
+  <%= render :partial => 'oneUser_form', locals: {mode: 'modify'} %>
+</div>
+
+<div id="user_search_form3" style="display: none;">
+  <%= render :partial => 'oneUser_form', locals: {mode: 'chgstate'} %>
+</div>

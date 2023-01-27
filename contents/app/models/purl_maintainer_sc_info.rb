@@ -1,0 +1,2 @@
+class PurlMaintainerScInfo < ApplicationRecord
+end

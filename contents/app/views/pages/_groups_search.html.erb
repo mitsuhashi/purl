@@ -1,0 +1,55 @@
+<!--
+  @brief
+  グループの検索の入力フォーム
+-->
+<div id="group_search_form1">
+  <%= form_tag '/page/group_search_results', :class => "form-inline", target: "result_panel" do %>
+    <div class="input-group">
+      <span class="input-group-text">Name: </span>
+      <%= text_field "group_search_name", "", class: "form-control", maxlength: 256 %>
+    </div>
+    <br>
+    <b>or</b>
+    <br>
+    <div class="input-group">
+      <span class="input-group-text">Group ID: </span>
+      <%= text_field "group_search_groupid", "", class: "form-control", maxlength: 256 %>
+    </div>
+    <br>
+    <b>or</b>
+    <br>
+    <div class="input-group">
+      <span class="input-group-text">Maintainer ID: </span>
+      <%= text_field "group_search_maintainerid", "", class: "form-control", maxlength: 4000 %>
+    </div>
+    <br>
+    <b>or</b>
+    <br>
+    <div class="input-group">
+      <span class="input-group-text">Member ID: </span>
+      <%= text_field "group_search_memberid", "", class: "form-control", maxlength: 4000 %>
+    </div>
+    <br>
+    <br>
+      <span class="input-group-text">Search tombstoned groups: </span>
+    <%= check_box_tag :group_search_disabled %>
+    <br>
+    <br>
+     <% if current_user.try(:admin_flag?) == true %>  
+       <span class="input-group-text">All groups (Admin only): </span>
+       <%= check_box_tag :group_search_all %>
+     <% end %>
+    <br>
+    <br>
+
+    <%= submit_tag 'Search' , class: 'btn btn-primary btn-block', name: "purls_search" %>
+  <% end %>
+</div>
+
+<div id="group_search_form2" style="display: none;">
+  <%= render :partial => 'oneGroup_form', locals: {mode: 'modify'} %>
+</div>
+
+<div id="group_search_form3" style="display: none;">
+  <%= render :partial => 'oneGroup_form', locals: {mode: 'chgstate'} %>
+</div>

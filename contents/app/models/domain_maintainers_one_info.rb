@@ -1,0 +1,2 @@
+class DomainMaintainersOneInfo < ApplicationRecord
+end

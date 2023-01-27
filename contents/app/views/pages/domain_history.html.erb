@@ -1,0 +1,67 @@
+<!--
+  @brief
+  ドメインの履歴の表示ページ
+-->
+<!DOCTYPE html>
+<html>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <head>
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+  </head>
+
+  <body>
+
+    <%= button_tag "Back", class: "btn btn-secondary", onclick: "history.back()" %> 
+    <br>
+    <br>
+  
+    <p class="alert alert-success">History view</p>
+
+    <%= paginate @domains %>
+    <table class="table">
+      <thead>
+        <tr class="info">
+          <th scope="col">#</th>
+          <th scope="col">Name</th>
+          <th scope="col">Domain ID</th>
+          <th scope="col">Maintainer IDs</th>
+          <th scope="col">Writer IDs</th>
+          <th scope="col">Public?</th>
+          <th scope="col">Action</th>
+          <th scope="col">Date</th>
+        </tr>
+      </thead>
+  
+      <tbody>
+      <% @domains.each do |domain| %>
+        <%  
+            if domain.disable_flag == false
+              tr_class = ""
+            else
+              tr_class = "active"
+            end
+        %>
+        <tr class=<%= tr_class %>>
+          <th scope="row"><%= domain.id %></th>
+          <td><%= domain.name %></td>
+          <td><%= domain.domain_id %></td>
+          <td><%= domain.maintainer_names %></td>
+          <td><%= domain.writer_names %></td>
+          <td><%= domain.public_flag %></td>
+          <% if domain.created_at == domain.updated_at %>
+            <td>Created</td>
+          <% else %>
+            <td>Modified</td>
+          <% end %>
+          <td><%= domain.updated_at %>
+        </tr> 
+      <% end %>
+      </tbody>
+    </table>
+    <%= paginate @domains %>
+  </body>
+</html>

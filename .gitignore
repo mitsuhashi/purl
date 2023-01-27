@@ -1,0 +1,26 @@
+# Ignore bundler config.
+contents/.bundle
+
+# Ignore bundler gems.
+contents/vendor/bundle
+
+# Ignore the default SQLite database.
+contents/db/*.sqlite3
+contents/db/*.sqlite3-journal
+
+# Ignore the postgres database.
+data
+
+# Ignore all logfiles and tempfiles.
+contents/log/*.log
+contents/tmp
+
+# Ignore other unneeded files.
+contents/doc/
+contents/test/
+*.swp
+*~
+.project
+.DS_Store
+.idea
+.secret

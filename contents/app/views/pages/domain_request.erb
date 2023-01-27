@@ -1,0 +1,82 @@
+<!--
+  @brief
+  承認待ちドメインの一覧表示ページ
+-->
+<!DOCTYPE html>
+<html>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <head>
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+  </head>
+
+  <body>
+    <!--
+      SQL: <%= @debug_sql %>
+    -->
+
+    <% if @result.length != 0 %>
+    <div class="alert alert-success">
+      <strong><%= @result %></strong>
+    </div>
+    <% end %>
+
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Name</th>
+          <th scope="col">Domain ID</th>
+          <th scope="col">Maintainer IDs</th>
+          <th scope="col">Public?</th>
+          <th scope="col">Approve</th>
+          <th scope="col">Deny</th>
+        </tr>
+      </thead>
+  
+      <tbody>
+      <% @domains.each do |domain| %>
+        <tr>
+          <th scope="row"><%= domain.id %></th>
+          <td><%= domain.name %></td>
+          <td><%= domain.domain_id %></td>
+          <td><%= @maintainer_ids %></td>
+          <td><%= domain.public_flag %></td>
+          <td>
+            <% if current_user.try(:admin_flag?) == true %>
+              <%= form_tag '/page/domain_request', :class => "form-inline", target: "result_panel" do %>
+                <input type="hidden" name="did" id="edit_id" value="<%= domain.id %>">
+                <input type="hidden" name="domain_name" id="edit_domainname" value="<%= domain.name %>">
+                <input type="hidden" name="domain_id" id="edit_domain_id" value="<%= domain.domain_id %>">
+                <input type="hidden" name="maintainers"id="edit_maintainers" value="<%= @maintainer_ids %>">
+                <input type="hidden" name="public_flag" id="edit_public_flag" value="<%= domain.public_flag %>">
+                <input type="hidden" name="result" value="approve">
+
+                <button type="submit" class="btn btn-info">Approve</button>
+              <% end %>
+            <% end %>
+          </td>
+          <td>
+            <% if current_user.try(:admin_flag?) == true %>
+              <%= form_tag '/page/domain_request', :class => "form-inline", target: "result_panel" do %>
+                <input type="hidden" name="did" id="chg_id" value="<%= domain.id %>">
+                <input type="hidden" name="domain_name" id="chg_domainname" value="<%= domain.name %>">
+                <input type="hidden" name="domain_id" id="chg_domain_id" value="<%= domain.domain_id %>">
+                <input type="hidden" name="maintainers" id="chg_maintainers" value="<%= @maintainer_ids %>">
+                <input type="hidden" name="public_flag" id="chg_public_flag" value="<%= domain.public_flag %>">
+                <input type="hidden" name="result" value="deny">
+
+                <button type="submit" class="btn btn-warning">Deny</button>
+              <% end %>
+            <% end %>
+          </td>
+        </tr> 
+      <% end %>
+      </tbody>
+    </table>
+
+  </body>
+</html>

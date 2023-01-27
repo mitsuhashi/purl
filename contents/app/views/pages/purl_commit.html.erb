@@ -1,0 +1,32 @@
+<!--
+  @brief
+  PURLの入力フォームのサブミット後の表示ページ
+-->
+<!DOCTYPE html>
+<html>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <head>
+    <title>Purl</title>
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+  </head>
+
+  <body>
+    <%= button_tag "Back", class: "btn btn-secondary", onclick: "history.back()" %>
+    <br>
+    <br>
+    <% if @result_flag == true %>
+      <div class="alert alert-success">
+        <strong><%= @result %></strong>
+      </div>
+    <% else %>
+      <div class="alert alert-danger">
+        <strong><%= simple_format(@result) %></strong>
+      </div>
+    <% end %>
+  </body>
+</html>
+

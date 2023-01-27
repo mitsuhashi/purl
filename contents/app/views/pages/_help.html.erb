@@ -1,0 +1,609 @@
+<script>
+$(function() {
+  var topBtn = $('#page-top');    
+  topBtn.hide();
+  //スクロールが100に達したらボタン表示
+  $(window).scroll(function () {
+    if ($(this).scrollTop() > 100) {
+      topBtn.fadeIn();
+    } else {
+      topBtn.fadeOut();
+    }
+  });
+  //スクロールしてトップ
+  topBtn.click(function () {
+    $('body,html').animate({
+      scrollTop: 0
+    }, 500);
+    return false;
+  });
+});
+
+</script>
+<p id="page-top"><a href="#wrap">PAGE TOP</a></p>
+
+<strong>Contents</strong>
+
+<ul>
+  <li>1. <a onclick="help_tab_click('chap_overview')" href="javascript:void(0)">Overview of PURLs</a></li>
+  <li>2. <a onclick="help_tab_click('chap_purl')" href="javascript:void(0)">Administering PURLs</a>
+    <ul>
+      <li>2.1 <a onclick="help_tab_click('chap_purlcreate')" href="javascript:void(0)">Create a New PURL</a></li> 
+      <li>2.2 <a onclick="help_tab_click('chap_adv_purlcreate')" href="javascript:void(0)">Create an Advanced PURL</a></li> 
+      <li>2.3 <a onclick="help_tab_click('chap_purlsearch')" href="javascript:void(0)">Search for PURL Information</a></li> 
+      <li>2.4 <a onclick="help_tab_click('chap_purlmodify')" href="javascript:void(0)">Modify an Existing PURL</a></li> 
+      <li>2.5 <a onclick="help_tab_click('chap_purlchg')" href="javascript:void(0)">Disable an Existing PURL or Enable an disabled PURL</a></li> 
+      <li>2.6 <a onclick="help_tab_click('chap_purlhistory')" href="javascript:void(0)">Search for PURL's History</a></li> 
+    </ul>
+  </li>
+  <li>3. <a onclick="help_tab_click('chap_user')" href="javascript:void(0)">Administering Users</a>
+    <ul>
+      <li>3.1 <a onclick="help_tab_click('chap_usercreate')" href="javascript:void(0)">Register a New User</a></li> 
+      <li>3.2 <a onclick="help_tab_click('chap_usersearch')" href="javascript:void(0)">Search for User Information</a></li> 
+      <li>3.3 <a onclick="help_tab_click('chap_usermodify')" href="javascript:void(0)">Modify an Existing User</a></li> 
+      <li>3.4 <a onclick="help_tab_click('chap_userchg')" href="javascript:void(0)">Disable an Existing User</a></li> 
+      <li>3.5 <a onclick="help_tab_click('chap_userhistory')" href="javascript:void(0)">Search for user's History</a></li> 
+    </ul>
+  </li>
+  <li>4. <a onclick="help_tab_click('chap_group')" href="javascript:void(0)">Administering Groups of Users</a>
+    <ul>
+      <li>4.1 <a onclick="help_tab_click('chap_groupcreate')" href="javascript:void(0)">Create a New Group</a></li> 
+      <li>4.2 <a onclick="help_tab_click('chap_groupsearch')" href="javascript:void(0)">Search for Group Information</a></li> 
+      <li>4.3 <a onclick="help_tab_click('chap_groupmodify')" href="javascript:void(0)">Modify an Existing Group</a></li> 
+      <li>4.4 <a onclick="help_tab_click('chap_groupchg')" href="javascript:void(0)">Disable an Existing Group</a></li> 
+      <li>4.5 <a onclick="help_tab_click('chap_grouphistory')" href="javascript:void(0)">Search for group's History</a></li> 
+    </ul>
+  </li>
+  <li>5. <a onclick="help_tab_click('chap_domain')" href="javascript:void(0)">Administering PURL Domains</a>
+    <ul>
+      <li>5.1 <a onclick="help_tab_click('chap_domaincreate')" href="javascript:void(0)">Create a New Domain</a></li> 
+      <li>5.2 <a onclick="help_tab_click('chap_domainsearch')" href="javascript:void(0)">Search for Domain Information</a></li> 
+      <li>5.3 <a onclick="help_tab_click('chap_domainmodify')" href="javascript:void(0)">Modify an Existing Domain</a></li> 
+      <li>5.4 <a onclick="help_tab_click('chap_domainchg')" href="javascript:void(0)">Disable an Existing Domain</a></li> 
+      <li>5.5 <a onclick="help_tab_click('chap_domainhistory')" href="javascript:void(0)">Search for domain's History</a></li> 
+    </ul>
+  </li>
+</ul>
+
+<h1 id="chap_overview">1. Overview of PURLs</h1>
+
+  PURLs are Persistent Uniform Resource Locators (URLs). 
+A URL is simply an address on the World Wide Web. 
+A Persistent URL is an address on the World Wide Web that points to other Web resources. 
+If a Web resource changes location (and hence URL), a PURL pointing to it can be updated. 
+A user of a PURL always uses the same Web address, even though the resource in question may have moved. 
+
+<br>
+<br>
+  PURLs are themselves valid URLs. 
+<a onclick="help_tab_click('fig_purl_url')" href="javascript:void(0)">Figure 1</a> shows the parts of a PURL. 
+The scheme part tells a computer program, such as a Web browser, which protocol to use when resolving the address. 
+The host part tells which machine to connect to. 
+The next part, the PURL domain, is analogous to a path in a URL. 
+The domain is a hierarchical information space that separates PURLs and allows for PURLs to have different maintainers. 
+Each domain may be administered by one or more designated maintainers. 
+Finally, the PURL name is the name of the PURL itself. 
+The domain and name together constitute the PURL's "id".
+
+<br>
+<br>
+<div align="center">
+<img id="fig_purl_url" src="/assets/purl_url.png" width="30%" height="30%" style="background-color: #ffffff;">
+<br>
+Figure 1. Parts of a PURL
+</div>
+
+<br>
+PURLs are categorized into different types depending on how they respond to a request. 
+Most PURLs simply redirect to a another URL (the "target" URL): Those are PURLs of type 302, because they respond to a request with an HTTP response code of 302, meaning that the object of the request was found elsewhere.
+PURLs may also respond with other HTTP response codes. <a onclick="help_tab_click('purltypestable')" href="javascript:void(0)">Table 1</a> summarizes the different types of PURLs.
+<br>
+<br>
+It is worth noting that there are some differing interpretations of the HTTP specification and hence some decisions were made in the implementation of PURLs. For example, an HTTP server may respond with a 404 response code if a resource is not found, if it is temporarily not present or if it simply does not want to provide it to a requester. 
+We have chosen to think of a 404 as representing a temporarily gone status and using a 410 for those resources which are permanently not resolvable. 
+Similarly, we have noted the need for a way to ground non-information resources into the World Wide Web and supported that concept with PURLs by suggesting that any resource addressed by a 303 PURL and returning a "See also URL" be explicitly considered <b>not</b> to be an information resource. 
+This decision allows physical resources (such as your car) or conceptual resources (such as the idea of a car) to be given a PURL and referred to in a sharable manner (as when using Semantic Web techniques). 
+Where a particular interpretation of the <a href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html">HTTP status code definitions</a> differs from the way an HTTP response code is used by a PURL server, we suggest interpreting the intent of PURLs via the <b>Meaning</b> column in <a onclick="help_tab_click('purltypestable')" href="javascript:void(0)">Table 1</a>.
+
+<br>
+<br>
+<div align="center">
+  Table 1. Types of PURLs
+  <br>
+  <table id="purltypestable" class="table" summary="Table of PURL Types" style="border-color: black; width: 50%;">
+    <tbody>
+      <tr><th>PURL Type</th><th>Meaning</th><th>HTTP Shorthand</th></tr>
+      <tr><td>301</td><td>Moved permanently to a target URL</td><td>Moved Permanently</td></tr>
+      <tr><td>302</td><td>Simple redirection to a target URL</td><td>Found</td></tr>
+      <tr><td>303</td><td>See other URLs (use for Semantic Web resources)</td><td>See Other</td></tr>
+      <tr><td>307</td><td>Temporary redirect to a target URL</td><td>Temporary Redirect</td></tr>
+      <tr><td>404</td><td>Temporarily gone</td><td>Not Found</td></tr>
+      <tr><td>410</td><td>Permanently gone</td><td>Gone</td></tr>
+    </tbody>
+  </table>
+</div>
+<br>
+<br>
+PURL servers may be accessed either by a Web user interface or a public API. 
+PURLs and their associated domains, users, groups of users and documentation may be reached by either method. 
+<a onclick="help_tab_click('fig_purl_tab_menu')" href="javascript:void(0)">Figure 2</a> shows the tabbed navigation options in the Web user interface. 
+
+<br>
+<br>
+<div align="center">
+<img id="fig_purl_tab_menu" src="/assets/tab_menu.png" width="35%" height="35%" style="background-color: #ffffff;">
+<br>
+Figure 2. Tabbed Navigation in the Web User Interface
+</div>
+
+<h1 id="chap_purl">2. Administering PURLs</h1>
+
+The single most important task that one can accomplish on a PURL server is the creation of a new PURL. 
+Other administrative actions, from user, group or domain maintenance to the other operations on the PURLs themselves are secondary to that main task. 
+This section addresses the creation of simple (HTTP redirection) PURLs and advanced PURLs, along with the other things that may be done to a PURL.
+
+A "maintainer" is someone who can modify a PURL. 
+A maintainer of a PURL may modify the record for that PURL. 
+A user who creates a PURL is automatically added as a maintainer.
+
+Three actions may be taken on a PURL: Creation, Advanced Creation or Searching. 
+These three actions may be accessed in the PURL Web user interface as shown in <a onclick="help_tab_click('fig_purl_menu')" href="javascript:void(0)">Figure 3</a>.
+
+Creating a simple or advanced PURL creates a record for that PURL on a PURL server. 
+A simple PURL merely redirects to a given URL. 
+An advanced PURL may return any of the HTTP response codes listed in <a onclick="help_tab_click('purltypestable')" href="javascript:void(0)">Table 1</a>, including the 303 response code used to return information about physical or conceptual resources. 
+To modify or delete PURL is done from searching result.
+
+<br>
+<br>
+<div align="center">
+<img id="fig_purl_menu" src="/assets/purl_menu.png" width="25%" height="25%" style="background-color: #ffffff;">
+<br>
+Figure 3. Actions on PURLs
+</div>
+
+<h2 id="chap_purlcreate">2.1 Create a New PURL</h2>
+
+PURLs require a Domain to hold them. Domains have to be created before PURLs may be placed in them (see <a onclick="help_tab_click('chap_domaincreate')" href="javascript:void(0)">5.1 Create a New Domain</a>).
+<br>
+<br>
+Simple PURLs are always of type 302 (see <a onclick="help_tab_click('purltypestable')" href="javascript:void(0)">Table 1</a> for information on PURL types). That is, resolving a simple PURL will always return an HTTP response code of 302 (Found) with a Location header specifying where the requester should seek the requested resource. Simple PURLs are thus a handy simplification of advanced PURLs to account for a common use case.
+
+Simple PURLs may be created via the PURL Creation Form.
+
+<a onclick="help_tab_click('fig_create_purl_exp')" href="javascript:void(0)">Figure 4</a> shows the creation of an example simple PURL. 
+A target URL is the URL to which the PURL will redirect. 
+A maintainer is a user or group authorized to administer a PURL. 
+A user who creates a PURL is automatically added as a maintainer. 
+
+In this case, a PURL will be created on a PURL server with the path "/zepheira/examples/BBC". 
+If the PURL server was running on a machine called purlz.org, then the resolution of http://purlz.org/zepheira/examples/BBC would result in an HTTP 302 response directing the user (or Web browser, or other computer application) to look for the desired resource at http://bbc.co.uk/, the British Broadcasting Service's Web site. 
+Three maintainers are listed for this PURL; the users "testuser" and the group "testgroup". 
+
+<br>
+<br>
+<div align="center">
+<img id="fig_create_purl_exp" src="/assets/create_purl_example.png" width="35%" height="35%" style="background-color: #ffffff;">
+<br>
+Figure 4. Creating a PURL
+</div>
+
+<h2 id="chap_adv_purlcreate">2.2 Create an Advanced PURL</h2>
+
+PURLs require a Domain to hold them. 
+Domains have to be created before PURLs may replaced in them (see <a onclick="help_tab_click('chap_domaincreate')" href="javascript:void(0)">5.1 Create a New Domain</a>). 
+<br>
+<br>
+Advanced PURLs may be created via the PURL Advanced Creation Form. 
+Note that this form will adjust itself to gather the information required for the type of PURL that you select. 
+Since simple (302) PURLs were covered in <a onclick="help_tab_click('chap_purlcreate')" href="javascript:void(0)">2.1 Create a New PURL</a>, the example given below illustrates a PURL of type 303.
+<br>
+<br>
+Advanced PURLs may return any HTTP response code listed in <a onclick="help_tab_click('purltypestable')" href="javascript:void(0)">Table 1</a>. 
+Of those, PURLs of types 302 (simple redirections) and 303 (information about non-informational resources) are the most common. 
+<a onclick="help_tab_click('fig_adv_purl_menu')" href="javascript:void(0)">Figure 5</a> shows the PURL type being selected in the Web user interface. 
+The first six types are the entries from <a onclick="help_tab_click('purltypestable')" href="javascript:void(0)">Table 1</a>, as previously discussed. 
+The last three (Clone, Chain or Partial-redirect) are special actions that require some additional information but eventually result in a PURL of one of the six types listed in <a onclick="help_tab_click('purltypestable')" href="javascript:void(0)">Table 1</a>. 
+Cloning a PURL allows one to create a new PURL based on the record of an existing PURL. Chaining allows a PURL of type 302 to refer to another PURL (of any type) without the network overhead of a separate redirection. 
+<br>
+<br>
+<div align="center">
+<img id="fig_adv_purl_menu" src="/assets/adv_purl_menu.png" width="30%" height="30%" style="background-color: #ffffff;">
+<br>
+Figure 5. Selecting the Type of an Advanced PURL
+</div>
+<br>
+<br>
+Partial-redirect PURLs allow PURLs of type 302 to be created which refer to a directory level portion of a URL; any path information appended to a partial redirect PURL is in turn appended to its target URL. 
+That allows a single PURL to redirect to a hierarchy on a target Web server.
+<br>
+<br>
+<div align="center">
+<img id="fig_group_menu" src="/assets/partial_example.png" width="45%" height="45%" style="background-color: #ffffff;">
+<br>
+Figure 6. Partial-redirect
+</div>
+<br>
+<br>
+There are four (4) types of partial-redirect PURLs:  Partial, Partial-append-extension, Partial-ignore-extension and Partial-replace-extension.
+The plain Partial is simplest.
+Any string added to the end of a Partial PURL is appended to its target prior to redirection.
+For example, suppose we have a PURL with an id of 'http://[URL]/net/partialexample/' that redirects to a target of 'http://example.com/partialtest/'.
+If we then try to resolve the URL 'http://[URL]/net/partialexample/foo/bar/baz' we will find that an HTTP 302 message is returned that redirects us to the location 'http://example.com/partialtest/foo/bar/baz'.
+The "extra" path information added the end of the Partial PURL was added to the end of the target URL.
+Partial PURLs are treated as simple strings of characters, so any attempt to resolve a URL with a Query String on the end will also get appended verbatim to the target, like so:  'http://[URL]/net/partialexample/foo?bar=baz' will be redirected to 'http://example.com/partialtest/foo?bar=baz'.
+<br>
+<br>
+A Partial-append-extension PURL is a type of partial-redirect a PURL that allows a file extension to be appended to the target URL at the time of the PURL's resolution.
+This is occasionally useful when creating partial-redirects to target systems that use file extensions to separate content types.
+The file extension to append to the target is given immediately after the PURL id.
+For example, consider a PURL of type partial-append-extension called 'http://[URL]/net/partialappendextension/' that has a target of 'http://example.com/partialappendtest/'.
+If you resolve the partial with some added path, say 'http://[URL]/net/partialappendextension/foo/bar/bam?id=fizzle', it will redirect to 'http://example.com/partialappendtest/bar/bam.foo?id=fizzle'.
+The file extension 'foo' is added to the PURL immediately after the PURL id and immediately before any additional path information.
+The file extension ('foo') is then stripped from the path and added to the end of the target URL after the path extension but before any Query String.
+Any Query String is appended to the end of the newly created target URL.
+<br>
+<br>
+<div align="center">
+<img id="fig_group_menu" src="/assets/partial_app_ext_example.png" width="45%" height="45%" style="background-color: #ffffff;">
+<br>
+Figure 7. Partial-append-extension
+</div>
+<br>
+<br>
+A Partial-ignore-extension PURL is a type of partial-redirect PURL that removes any file extensions from the path information used to create the target URL.
+For example, a PURL 'http://[URL]/net/partialignoreextension/' with a target of 'http://example.com/partialignoretest/' when called as 'http://[URL]/net/partialignoreextension/foo.html' would redirect to 'http://example.com/partialignoretest/foo'.
+<br>
+<br>
+<div align="center">
+<img id="fig_group_menu" src="/assets/partial_ign_ext_example.png" width="45%" height="45%" style="background-color: #ffffff;">
+<br>
+Figure 8. Partial-ignore-extension
+</div>
+<br>
+<br>
+A Partial-replace-extension PURL is a type of partial-redirect PURL combines the functionality of the Partial-append-extension PURL and Partial-ignore-extension types.
+It ignores any file extension given in the PURL and appends a file extension provided in the PURL path.
+For example, a PURL called 'http://[URL]/record/' and a target of 'http://example.com/records/' when called as 'http://[URL]/record/htm/foo/bar.html' would redirect to a target of 'http://example.com/records/foo/bar.htm'.
+<br>
+<br>
+<div align="center">
+<img id="fig_group_menu" src="/assets/partial_rep_ext_example.png" width="45%" height="45%" style="background-color: #ffffff;">
+<br>
+Figure 9. Partial-replace-extension
+</div>
+<br>
+<br>
+
+<a onclick="help_tab_click('fig_adv_purl_exp')" href="javascript:void(0)">Figure 10</a> shows the creation of an example advanced PURL.
+The PURL path shown is meant to suggest the form of deep hierarchy often found in real-world data.
+The example PURL is of type 303 (labeled in the pulldown menu as "See also URLs", which are used for resources which may not be directly accessible on the World Wide Web.
+Two maintainers are listed; a maintainer is a user or group authorized to administer a PURL.
+Finally, the "See also URL" itself is provided, which gives information about the addressed resource without it actually pretending to be the addressed resource, as would a response to a 301, 302 or 307 PURL.
+
+<br>
+<br>
+<div align="center">
+<img id="fig_adv_purl_exp" src="/assets/adv_purl_example.png" width="30%" height="30%" style="background-color: #ffffff;">
+<br>
+Figure 10. Creating an Advanced PURL
+</div>
+
+<h2 id="chap_purlsearch"> 2.3 Search for PURL Information</h2>
+
+PURL records may be searched using the PURL Search Form, an example of which is shown in <a onclick="help_tab_click('fig_purl_search')" href="javascript:void(0)">Figure 11</a>. 
+Records may be searched by PURL path (see <a onclick="help_tab_click('fig_purl_url')" href="javascript:void(0)">Figure 1</a> for the definition of a PURL path), target URL, See Also URL or maintainer IDs.
+ A target URL is a URL that a PURL of type 301, 302 or 307 redirects to (see the list of PURL types in 1. Overview of PURLs). 
+A See Also URL is a URL that a PURL of type 303 refers to. A maintainer is a user or group authorized to administer a PURL. 
+Two types of maintainer fields are used: "Maintainer IDs" expands groups into lists of users and "Explicit Maintainers" does not.
+
+<a onclick="help_tab_click('fig_purl_search')" href="javascript:void(0)">Figure 11</a> shows a sample search for PURLs maintained by the user "testuser".
+ 
+Disabled PURL records may be searched by selecting the checkbox labeled "Search disabled PURLs" in the PURL Search Form as shown in <a onclick="help_tab_click('#fig_purl_search')" href="javascript:void(0)">Figure 11</a>. 
+PURL records become tombstoned if they are deleted via the PURL Deletion Form.  
+
+<br>
+<br>
+<div align="center">
+<img id="fig_purl_search" src="/assets/purl_search.png" width="80%" height="80%" style="background-color: #ffffff;">
+<br>
+Figure 11. Searching for PURLs
+</div>
+
+<h2 id="chap_purlmodify">2.4 Modify an Existing PURL</h2>
+
+Records for existing PURLs may be modified by selecting "Modify" button (<a onclick="help_tab_click('fig_purl_search')" href="javascript:void(0)">Figure. 11</a>) in search results table (<a onclick="help_tab_click('chap_purlsearch')" href="javascript:void(0)">2.3 Search for PURL Information</a>), which is much like the form for creating a new PURL (<a onclick="help_tab_click('fig_purl_modify')" href="javascript:void(0)">Figure. 12</a>).
+
+<br>
+<br>
+<div align="center">
+<img id="fig_purl_modify" src="/assets/purl_modify.png" width="50%" height="50%" style="background-color: #ffffff;">
+<br>
+Figure 12. Modifying a PURLs
+</div>
+
+<h2 id="chap_purlchg">2.5 Disable an Existing PURL or Enable an disabled PURL</h2>
+
+The status of records, which is enabled or disabled, for existing PURLs is changed by selecting "Change" button (<a onclick="help_tab_click('fig_purl_search')" href="javascript:void(0)">Figure. 11</a>) in search results table (<a onclick="help_tab_click('chap_purlsearch')" href="javascript:void(0)">2.3 Search for PURL Information</a>), which is much like the form for creating a new PURL (<a onclick="help_tab_click('fig_purl_change')" href="javascript:void(0)">Figure. 13</a>).
+
+<br>
+<br>
+<div align="center">
+<img id="fig_purl_change" src="/assets/purl_change.png" width="60%" height="60%" style="background-color: #ffffff;">
+<br>
+Figure 13. Change status for PURLs
+</div>
+
+<h2 id="chap_purlhistory">2.6 Search for PURL's History</h2>
+
+Information regarding the changes to a PURL may be found using results from the PURL Search Form. 
+Clicking on "History" button in search results table (<a onclick="help_tab_click('chap_purlsearch')" href="javascript:void(0)">2.3 Search for PURL Information</a>) will display history table. 
+
+<br>
+<br>
+<div align="center">
+<img id="purl_url" src="/assets/purl_history.png" width="60%" height="60%" style="background-color: #ffffff;">
+<br>
+Figure 14. Change history table of PURLs
+</div>
+
+<h1 id="chap_user">3. Administering Users</h1>
+
+Two actions may be taken on a user: Registration or Searching. 
+These two actions may be accessed in the PURL Web user interface as shown in <a onclick="help_tab_click('fig_user_menu')" href="javascript:void(0)">Figure 15</a>.
+
+<br>
+<br>
+<div align="center">
+<img id="fig_user_menu" src="/assets/user_menu.png" width="25%" height="25%" style="background-color: #ffffff;">
+<br>
+Figure 15. Actions on Users
+</div>
+
+<h2 id="chap_usercreate">3.1 Register a New User</h2>
+
+Users have to be registered with a PURL server before they will be allowed to create or otherwise administer PURLs, participate in groups or administer domains.
+
+<a onclick="help_tab_click('fig_create_user_exp')" href="javascript:void(0)">Figure 16</a> shows an example user in the act of registration. 
+"Full name", "E-mail", "User ID" and "Password" must be required.
+
+<br>
+<br>
+<div align="center">
+<img id="fig_create_user_exp" src="/assets/create_user_example.png" width="25%" height="25%" style="background-color: #ffffff;">
+<br>
+Figure 16. Creating a PURL
+</div>
+
+After Administrator user approve your user registration，you can use registrated user account.
+
+<h2 id="chap_usersearch">3.2 Search for User Information</h2>
+
+User records may be searched using the User Search Form which is shown in <a onclick="help_tab_click('fig_user_search')" href="javascript:void(0)">Figure 17</a>.
+
+<br>
+<br>
+<div align="center">
+<img id="fig_user_search" src="/assets/user_search.png" width="90%" height="90%" style="background-color: #ffffff;">
+<br>
+Figure 17. Searching User Records
+</div>
+
+<h2 id="chap_usermodify">3.3 Modify an Existing User</h2>
+
+Records for existing users may be modified by selecting "Modify" button (<a onclick="help_tab_click('fig_user_search')" href="javascript:void(0)">Figure. 17</a>) in search results table (<a onclick="help_tab_click('chap_usersearch')" href="javascript:void(0)">3.2 Search for User Information</a>), which is much like the form for creating a new user (<a onclick="help_tab_click('fig_user_modify')" href="javascript:void(0)">Figure. 18</a>).
+You can not modify the other user account. 
+
+<br>
+<br>
+<div align="center">
+<img id="fig_user_modify" src="/assets/user_modify.png" width="50%" height="50%" style="background-color: #ffffff;">
+<br>
+Figure 18. Modifying a user
+</div>
+
+<h2 id="chap_userchg">3.4 Disable an Existing User</h2>
+
+You can invalidate your self account.
+Your account is changed by  "Change" button (<a onclick="help_tab_click('fig_user_search')" href="javascript:void(0)">Figure. 17</a>) in search results table (<a onclick="help_tab_click('chap_usersearch')" href="javascript:void(0)">3.2 Search for User Information</a>).
+To enable invalidated account can be enabled by using administrator account.
+
+<br>
+<br>
+<div align="center">
+<img id="fig_user_change" src="/assets/user_change.png" width="60%" height="60%" style="background-color: #ffffff;">
+<br>
+Figure 19. Invalidate account
+</div>
+
+<h2 id="chap_userhistory">3.5 Search for user's History</h2>
+
+Information regarding the changes to a user may be found using results from the User Search Form. 
+Clicking on "History" button in search results table (<a onclick="help_tab_click('chap_usersearch')" href="javascript:void(0)">3.2 Search for User Information</a>) will display history table. 
+
+<br>
+<br>
+<div align="center">
+<img id="fig_user_history" src="/assets/user_history.png" width="60%" height="60%" style="background-color: #ffffff;">
+<br>
+Figure 20. Change history table of users
+</div>
+
+<h1 id="chap_group">4. Administering Groups of Users</h1>
+
+It can be convenient to create groups of users to facilitate administration. 
+For example, if you create a large number of PURLs and each PURL may be changed by the same list of people, it will be easier to create a single group to represent those people than to individually list all people as maintainers. 
+A user who creates a group is automatically added as a maintainer.
+
+Two actions may be taken on a group: Creation or Searching. 
+These four actions may be accessed in the PURL Web user interface as shown in Figure 21.
+
+<br>
+<br>
+<div align="center">
+<img id="fig_group_menu" src="/assets/group_menu.png" width="25%" height="25%" style="background-color: #ffffff;">
+<br>
+Figure 21. Actions on Groups
+</div>
+
+<h2 id="chap_groupcreate">4.1 Create a New Group</h2>
+
+Groups may be created via the Group Creation Form.
+<a onclick="help_tab_click('fig_create_group_exp')" href="javascript:void(0)">Figure 22</a> shows the creation of a sample group. 
+A maintainer is a user or group authorized to administer a group and a member is a user or group that is a member of this group.
+
+<br>
+<br>
+<div align="center">
+<img id="fig_create_group_exp" src="/assets/create_group_example.png" width="25%" height="25%" style="background-color: #ffffff;">
+<br>
+Figure 22. Creating a group
+</div>
+
+<h2 id="chap_groupsearch">4.2 Search for Group Information</h2>
+
+Group records may be searched using the Group Search Form, an example of which is shown in <a onclick="help_tab_click('fig_group_search')" href="javascript:void(0)">Figure 23</a>.
+Records may be searched by group name, group ID, maintainer ID or member ID. 
+A maintainer is a user or group authorized to administer a group and a member is a user or group that is a member of the group. 
+
+<br>
+<br>
+<div align="center">
+<img id="fig_group_search" src="/assets/group_search.png" width="90%" height="90%" style="background-color: #ffffff;">
+<br>
+Figure 23. Searching Group Records
+</div>
+
+<h2 id="chap_groupmodify">4.3 Modify an Existing Group</h2>
+
+Records for existing groups may be modified by selecting "Modify" button (<a onclick="help_tab_click('fig_group_search')" href="javascript:void(0)">Figure. 23</a>) in search results table (<a onclick="help_tab_click('chap_groupsearch')" href="javascript:void(0)">4.2 Search for Group Information</a>), which is much like the form for creating a new user (<a onclick="help_tab_click('fig_group_modify')" href="javascript:void(0)">Figure. 24</a>).
+
+<br>
+<br>
+<div align="center">
+<img id="fig_group_modify" src="/assets/group_modify.png" width="50%" height="50%" style="background-color: #ffffff;">
+<br>
+Figure 24. Modifying a group
+</div>
+
+<h2 id="chap_groupchg">4.4  Disable an Existing Group</h2>
+
+The status of records, which is enabled or disabled, for existing groups is changed by selecting "Change" button (<a onclick="help_tab_click('fig_group_search')" href="javascript:void(0)">Figure. 23</a>) in search results table (<a onclick="help_tab_click('chap_groupsearch')" href="javascript:void(0)">4.2 Search for Group Information</a>), which is much like the form for creating a new group (<a onclick="help_tab_click('fig_group_change')" href="javascript:void(0)">Figure. 25</a>).
+
+<br>
+<br>
+<div align="center">
+<img id="fig_group_change" src="/assets/group_change.png" width="60%" height="60%" style="background-color: #ffffff;">
+<br>
+Figure 25. Change status for groups
+</div>
+
+<h2 id="chap_grouphistory">4.5 Search for group's History</h2>
+
+Information regarding the changes to a user may be found using results from the Group Search Form. 
+Clicking on "History" button in search results table (<a onclick="help_tab_click('chap_groupsearch')" href="javascript:void(0)">4.2 Search for Group Information</a>) will display history table. 
+
+<br>
+<br>
+<div align="center">
+<img id="fig_group_history" src="/assets/group_history.png" width="60%" height="60%" style="background-color: #ffffff;">
+<br>
+Figure 26. Change history table of groups
+</div>
+
+<h1 id="chap_domain">5. Administering PURL Domains</h1>
+
+PURLs are created within domains. 
+A domain is the path portion of the PURL URL form, as shown in <a onclick="help_tab_click('fig_purl_url')" href="javascript:void(0)">Figure 1</a>. 
+PURLs may not be created unless they are within a domain.
+
+A "maintainer" is someone who can modify a domain.
+A maintainer of a domain may modify the record for that domain.
+A "writer" is someone who may create a new PURL under a domain.
+A user who creates a domain is automatically added as a maintainer.
+
+Two actions may be taken on a domain: Creation or Searching.
+These two actions may be accessed in the PURL Web user interface as shown in <a onclick="help_tab_click('fig_domain_menu')" href="javascript:void(0)">Figure 27</a>.
+
+<br>
+<br>
+<div align="center">
+<img id="fig_domain_menu" src="/assets/domain_menu.png" width="25%" height="25%" style="background-color: #ffffff;">
+<br>
+Figure 27. Actions on Domains
+</div>
+
+Creating a domain creates a record for that domain on a PURL server.
+Note that the creation of top-level domains generally requires permission from a PURL server administrator and may not complete immediately. 
+
+Modification allows the domain record to be updated.
+Domain records may be searched by the general public.
+Finally, domain records may be disabled.
+These actions are described in detail below.
+
+<h2 id="chap_domaincreate">Create a New Domain</h2>
+
+Domains have to be created before PURLs may be placed in them.
+Domains may be created via the Domain Creation Form.
+<a onclick="help_tab_click('fig_create_domain_exp')" href="javascript:void(0)">Figure 28</a> shows the creation of a sample domain.
+A maintainer is a user or group authorized to administer a domain and a writer is a user or group authorized to create PURLs within a domain. 
+
+<br>
+<br>
+<div align="center">
+<img id="fig_create_domain_exp" src="/assets/create_domain_example.png" width="25%" height="25%" style="background-color: #ffffff;">
+<br>
+Figure 28. Creating a domain
+</div>
+
+<h2 id="chap_domainsearch">5.2 Search for Domain Information</h2>
+
+Domain records may be searched using the Domain Search Form, an example of which is shown in <a onclick="help_tab_click('fig_domain_search')" href="javascript:void(0)">Figure 29</a>.
+Records may be searched by group name, group ID, maintainer ID or member ID. 
+A maintainer is a user or group authorized to administer a group and a member is a user or group that is a member of the group. 
+
+<br>
+<br>
+<div align="center">
+<img id="fig_domain_search" src="/assets/domain_search.png" width="90%" height="90%" style="background-color: #ffffff;">
+<br>
+Figure 29. Searching Group Records
+</div>
+
+<h2 id="chap_domainmodify">5.3 Modify an Existing Domain</h2>
+
+Records for existing domains may be modified by selecting "Modify" button (<a onclick="help_tab_click('fig_domain_search')" href="javascript:void(0)">Figure. 29</a>) in search results table (<a onclick="help_tab_click('chap_domainsearch')" href="javascript:void(0)">5.2 Search for Domain Information</a>), which is much like the form for creating a new user (<a onclick="help_tab_click('fig_domain_modify')" href="javascript:void(0)">Figure. 30</a>).
+
+<br>
+<br>
+<div align="center">
+<img id="fig_domain_modify" src="/assets/domain_modify.png" width="50%" height="50%" style="background-color: #ffffff;">
+<br>
+Figure 30. Modifying a domain
+</div>
+
+<h2 id="chap_domainchg">5.4  Disable an Existing Domain</h2>
+
+The status of records, which is enabled or disabled, for existing domains is changed by selecting "Change" button (<a onclick="help_tab_click('fig_domain_search')" href="javascript:void(0)">Figure. 29</a>) in search results table (<a onclick="help_tab_click('chap_domainsearch')" href="javascript:void(0)">5.2 Search for Domain Information</a>), which is much like the form for creating a new domain (<a onclick="help_tab_click('fig_domain_change')" href="javascript:void(0)">Figure. 31</a>).
+
+<br>
+<br>
+<div align="center">
+<img id="fig_domain_change" src="/assets/domain_change.png" width="60%" height="60%" style="background-color: #ffffff;">
+<br>
+Figure 31. Change status for domains
+</div>
+
+<h2 id="chap_domainhistory">5.5 Search for domain's History</h2>
+
+Information regarding the changes to a user may be found using results from the Domain Search Form. 
+Clicking on "History" button in search results table (<a onclick="help_tab_click('chap_domainsearch')" href="javascript:void(0)">5.2 Search for Domain Information</a>) will display history table. 
+
+<br>
+<br>
+<div align="center">
+<img id="fig_domain_history" src="/assets/domain_history.png" width="60%" height="60%" style="background-color: #ffffff;">
+<br>
+Figure 32. Change history table of domains
+</div>
+

@@ -1,0 +1,69 @@
+<!--
+  @brief
+  PURLの検索結果の表示ページ
+-->
+
+<!DOCTYPE html>
+<html>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <head>
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+  </head>
+
+  <body>
+
+    <%= button_tag "Back", class: "btn btn-secondary", onclick: "history.back()" %> 
+    <br>
+    <br>
+  
+    <p class="alert alert-success">History view</p>
+    
+    <%= paginate @purls %>
+    <table class="table">
+      <thead>
+        <tr class="info">
+          <th scope="col">#</th>
+          <th scope="col">Path</th>
+          <th scope="col">Target</th>
+          <th scope="col">See Also URL</th>
+          <th scope="col">Existing PURL path</th>
+          <th scope="col">Maintainer IDs</th>
+          <th scope="col">Type</th>
+          <th scope="col">Action</th>
+          <th scope="col">Date</th>
+        </tr>
+      </thead>
+      <tbody>
+      <% @purls.each do |purl| %>
+        <%  
+            if purl.disable_flag == false
+              tr_class = ""
+            else
+              tr_class = "active"
+            end
+        %>
+        <tr class=<%= tr_class %>>
+          <th scope="row"><%= purl.id %></th>
+          <td><%= purl.path %></td>
+          <td><%= purl.target %></td>
+          <td><%= purl.see_also_url %></td>
+          <td><%= purl.clone_path %></td>
+          <td><%= purl.maintainer_names %></td>
+          <td><%= purl.rd_type %></td>
+          <% if purl.created_at == purl.updated_at %>
+            <td>Created</td>
+          <% else %>
+            <td>Modified</td>
+          <% end %>
+          <td><%= purl.updated_at %>
+        </tr> 
+      <% end %>
+      </tbody>
+    </table>
+    <%= paginate @purls %>
+  </body>
+</html>

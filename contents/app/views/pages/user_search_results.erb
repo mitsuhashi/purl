@@ -1,0 +1,113 @@
+<!--
+  @brief
+  ユーザーの検索結果の表示ページ
+-->
+
+<!DOCTYPE html>
+<html>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <head>
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+  </head>
+
+  <body>
+    <!--
+      SQL: <%= @debug_sql %>
+    -->
+    <%= button_tag "Back", class: "btn btn-secondary", onclick: "history.back()" %>
+    <br>
+    <br>
+    <p class="alert alert-warning">Record with grey background color are invalid data</p>
+
+    <%= paginate @users %>
+    <table class="table">
+      <thead>
+        <tr class="info">
+          <th scope="col">#</th>
+          <th scope="col">Fullname</th>
+          <th scope="col">User ID</th>
+          <th scope="col">E-mail</th>
+          <th scope="col">Affiliation</th>
+          <th scope="col">Justification</th>
+          <th scope="col">Modify?</th>
+          <th scope="col">Status</th>
+          <th scope="col">History</th>
+        </tr>
+      </thead>
+  
+      <tbody>
+      <% @users.each do |user| %>
+        <% 
+            if user.disable_flag == false 
+              tr_class = ""
+              ds_style = ""
+            else
+              tr_class = "active"
+              ds_style = "text-decoration: line-through;"
+            end
+        %>
+        <tr class=<%= tr_class %>>
+          <th scope="row"><%= user.id %></th>
+          <td style="<%= ds_style %>"><%= user.fullname %></td>
+          <td style="<%= ds_style %>"><%= user.username %></td>
+          <td style="<%= ds_style %>"><%= user.email %></td>
+          <td style="<%= ds_style %>"><%= user.affiliation %></td>
+          <td style="<%= ds_style %>"><%= user.justification %></td>
+          <td>
+            <% if current_user.try(:admin_flag?) == true ||  current_user.try(:username) == user.username %>
+              <!-- Javascript call -->
+              <form action="#">
+                <input type="hidden" id="edit_userid_<%= user.id %>" value="<%= user.id %>">
+                <input type="hidden" id="edit_fullname_<%= user.id %>" value="<%= user.fullname %>">
+                <input type="hidden" id="edit_affiliation_<%= user.id %>" value="<%= user.affiliation %>">
+                <input type="hidden" id="edit_email_<%= user.id %>" value="<%= user.email %>">
+                <input type="hidden" id="edit_username_<%= user.id %>" value="<%= user.username %>">
+                <input type="hidden" id="edit_justification_<%= user.id %>" value="<%= user.justification %>">
+                <input type="hidden" id="edit_group_flag_<%= user.id %>" value="<%= user.group_flag %>">
+                <input type="hidden" id="edit_allowed_to_log_in_<%= user.id %>" value="<%= user.allowed_to_log_in %>">
+                <input type="hidden" id="edit_admin_flag_<%= user.id %>" value="<%= user.admin_flag %>">
+
+                <button type="submit" class="btn btn-success" onclick="send_user_edit(<%= user.id %>, <%= current_user.try(:admin_flag) %>); return false;">Modify</button>
+              </form>
+            <% end %>
+          </td>
+          <td>
+            <% if current_user.try(:admin_flag?) == true ||  current_user.try(:username) == user.username %>
+              <!-- Javascript call -->
+              <form action="#">
+                <input type="hidden" id="chg_userid_<%= user.id %>" value="<%= user.id %>">
+                <input type="hidden" id="chg_fullname_<%= user.id %>" value="<%= user.fullname %>">
+                <input type="hidden" id="chg_affiliation_<%= user.id %>" value="<%= user.affiliation %>">
+                <input type="hidden" id="chg_email_<%= user.id %>" value="<%= user.email %>">
+                <input type="hidden" id="chg_username_<%= user.id %>" value="<%= user.username %>">
+                <input type="hidden" id="chg_justification_<%= user.id %>" value="<%= user.justification %>">
+                <input type="hidden" id="chg_disable_<%= user.id %>" value="<%= user.justification %>">
+                <input type="hidden" id="chg_group_flag_<%= user.id %>" value="<%= user.group_flag %>">
+                <input type="hidden" id="chg_allowed_to_log_in_<%= user.id %>" value="<%= user.allowed_to_log_in %>">
+                <input type="hidden" id="chg_admin_flag_<%= user.id %>" value="<%= user.admin_flag %>">
+
+                <% if user.allowed_to_log_in == true %>
+                  <button type="submit" class="btn btn-warning" onclick="send_user_disable(0, <%= user.id %>, <%= current_user.try(:admin_flag) %>); return false;">Change</button>
+                <% else %>
+                  <button type="submit" class="btn btn-warning" onclick="send_user_disable(1, <%= user.id %>, <%= current_user.try(:admin_flag) %>); return false;">Change</button>
+                <% end %>
+              </form>
+            <% end %>
+          </td>
+          <td>
+            <%= form_tag '/page/user_history', :method => :post, target: "result_panel" do %>
+              <input type="hidden" name="history_userid" value="<%= user.id %>">
+              <%= submit_tag 'History' , class: 'btn btn-info btn-block' %>
+            <% end %>
+          </td>
+        </tr> 
+      <% end %>
+      </tbody>
+    </table>
+    <%= paginate @users %>
+  </body>
+</html>

@@ -1,0 +1,20 @@
+<!--
+  @brief
+  「Admin」タブ内の親ページ
+-->
+<div class="panel panel-primary">
+  <div class="panel-heading"><b>Choose to approve or deny each request</b></div>
+    <% if current_user.try(:admin_flag?) == true %>
+      <div class="panel-footer">
+        <ul class="list-group">
+          <li class="list-group-item"><%= link_to 'Approve pending user requests', '/page/user_request', target: "result_panel" %></li>
+          <li class="list-group-item"><%= link_to 'Approve pending top-level domain requests', '/page/domain_request', target: "result_panel" %></li>
+        </ul>
+      </div>
+    <% else %>
+      <div class="alert alert-danger">
+        You need to be logged in as an admin to perform this action.
+      </div>
+    <% end %>
+  </div>
+</div>

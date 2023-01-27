@@ -1,0 +1,40 @@
+<!--
+  @brief
+  グループの入力フォーム
+
+  @detail
+  グループはUserモデルに登録するので，インスタンスは@newuserを使用する。
+-->
+<%= form_for @newuser, :html => {:class => "form-inline", target: "result_panel"}, :url => {:action => :group_commit} do |f| %>
+
+  <input type="hidden" name="<%= mode %>_groupid" id="<%= mode %>_newgroup_groupid" value="-1" >
+
+  <div class="input-group">
+    <span class="input-group-text">Name: </span>
+    <%= f.text_field :fullname, class: "form-control", id: "#{mode}_newgroup_fullname", maxlength: 255 %>
+  </div>
+  <br>
+  <div class="input-group">
+    <span class="input-group-text">Group ID: </span>
+    <%= f.text_field :username, class: "form-control", id: "#{mode}_newgroup_username", maxlength: 255 %>
+  </div>
+  <br>
+  <div class="input-group">
+    <span class="input-group-text">Maintainer IDs (one per line): </span>
+    <%= text_area "newgroup_maintainer_ids", "", class: "form-control", id: "#{mode}_newgroup_maintainer_ids", maxlength: 4000, cols: 400 %>
+  </div>
+  <br>
+  <div class="input-group">
+    <span class="input-group-text">Member IDs (one per line): </span>
+    <%= text_area "newgroup_member_ids", "", class: "form-control", id: "#{mode}_newgroup_writer_ids", maxlength: 4000, cols: 400 %>
+  </div>
+  <br>
+  <div class="input-group">
+    <span class="input-group-text">Public comments: </span>
+    <%= f.text_area :comment, class: "form-control", id: "#{mode}_newgroup_comment", maxlength: 4000, cols: 400 %>
+  </div>
+
+  <br>
+  <br>
+  <%= submit_tag 'Submit' , class: 'btn btn-primary btn-block', name: "newgroup_submit", id: "#{mode}_newgroup_submit" %>
+<% end %>

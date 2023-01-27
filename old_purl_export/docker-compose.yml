@@ -1,0 +1,28 @@
+version: '2'
+
+services:
+  old_purl_db:
+    image: mysql:5.7
+    container_name: "old_purl_mysql"
+    environment:
+      MYSQL_ROOT_PASSWORD: initial0
+      MYSQL_DATABASE: old_purl_export
+      TZ: 'Asia/Tokyo'
+    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    volumes:
+      - "$PWD/db/data:/var/lib/mysql"
+      - "$PWD/db/mysql:/etc/mysql"
+      - "$PWD:/home/workdir"
+    working_dir: /home/workdir
+    ports:
+      - 23306:3306
+  old_purl_export:
+    build:
+      context: ./docker
+      dockerfile: Dockerfile
+    image: "old_purl_export"
+    container_name: "old_purl_exptool"
+    tty: true
+    volumes:
+       - "$PWD:/home/workdir"
+    working_dir: /home/workdir

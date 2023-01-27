@@ -1,0 +1,69 @@
+<!--
+  @brief
+  ユーザーの入力フォーム
+-->
+<%= form_for @newuser, :html => {:class => "form-inline", target: "result_panel"}, :url => {:action => :user_commit} do |f| %>
+
+  <input type="hidden" name="<%= mode %>_userid" id="<%= mode %>_userid" value="-1" >
+
+  <div class="input-group">
+    <span class="input-group-text">Full name: </span><br>
+    <%= f.text_field :fullname, class: "form-control", id: "#{mode}_fullname", maxlength: 255 %>
+  </div>
+  <br>
+
+  <div class="input-group">
+    <span class="input-group-text">Affiliation: </span><br>
+    <%= f.text_field :affiliation, class: "form-control", id: "#{mode}_affiliation", maxlength: 255 %>
+  </div>
+  <br>
+
+  <div class="input-group">
+    <span class="input-group-text">E-mail address: </span><br>
+    <%= f.email_field :email, class: "form-control", id: "#{mode}_email", maxlength: 255 %>
+  </div>
+  <br>
+
+  <div class="input-group">
+    <span class="input-group-text">User ID: </span><br>
+    <%= f.text_field :username, class: "form-control", id: "#{mode}_username", maxlength: 255 %>
+  </div>
+  <br>
+  
+  <!-- password -->
+  <div id="<%= mode %>_password_area">
+    <div class="input-group">
+      <span class="input-group-text">Password: </span><br>
+      <%= f.password_field :password, class: "form-control", id: "#{mode}_password", maxlength: 255 %>
+    </div>
+    <br>
+  
+    <div class="input-group">
+      <span class="input-group-text">Re-enter password: </span><br>
+      <%= f.password_field :password_confirmation, class: "form-control", id: "#{mode}_password_confirmation", maxlength: 255 %>
+    </div>
+    <br>
+  </div>
+  <!-- password -end- -->
+  
+  <div class="input-group">
+    <span class="input-group-text">Justification: </span><br>
+    <%= f.text_area :justification, class: "form-control", id: "#{mode}_justification", maxlength: 4000, cols: 40 %>
+  </div>
+  <br>
+  <br>
+
+  <% if current_user.try(:admin_flag?) == true %>
+    <div class="input-group">
+      <span class="input-group-text">Admin?: </span>
+      <input type="checkbox" name="admin_flag" id="<%= mode %>_admin_flag">
+    </div>
+  <% end %>
+
+  <br>
+  <br>
+  <%= submit_tag 'Submit' , class: 'btn btn-primary btn-block', name: "newuser_submit", id: "#{mode}_newuser_submit" %>
+<!--
+</form>
+-->
+<% end %>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <head>
+    <title>Purl</title>
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+  </head>
+
+  <body>
+    <header>
+      <nav>
+        <% if request.path_info != "/users/sign_in" %>
+          <% if user_signed_in? %>
+            <strong><%= link_to current_user.username %></strong>
+            <!--
+            <%= link_to 'プロフィール変更', edit_user_registration_path %>
+            -->
+            <%= link_to 'Logout', destroy_user_session_path, method: :delete, class: "btn btn-info" %>
+          <% else %>
+            <!--
+            <%= link_to 'サインアップ', new_user_registration_path %>
+            -->
+            <%= link_to 'Login', new_user_session_path, class: "btn btn-primary" %>
+          <% end %>
+        <% end %>
+      </nav>
+    </header>
+
+    <br>
+    <p class="alert-success"><%= notice %></p>
+    <p class="alert-danger"><%= alert %></p>
+
+    <%= yield %>
+  </body>
+</html>

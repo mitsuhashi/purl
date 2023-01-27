@@ -1,0 +1,33 @@
+<!--
+  @brief
+  ドメインの入力フォーム
+-->
+<%= form_for @newdomain, :html => {:class => "form-inline", target: "result_panel"}, :url => {:action => :domain_commit} do |f| %>
+  <input type="hidden" name="<%= mode %>_did" id="<%= mode %>_did" value="-1" >
+
+  <div class="input-group">
+    <span class="input-group-text">Name: </span>
+    <%= f.text_field :name, class: "form-control", id: "#{mode}_newdomain_name", maxlength: 2000 %>
+  </div>
+  <br>
+  <div class="input-group">
+    <span class="input-group-text">Domain ID: </span>
+    <%= f.text_field :domain_id, class: "form-control", id: "#{mode}_newdomain_domainid", maxlength: 4000 %>
+  </div>
+  <br>
+  <div class="input-group">
+    <span class="input-group-text">Maintainers IDs(one per line): </span>
+    <%= text_area "newdomain_maintainer_ids", "", class: "form-control", id: "#{mode}_newdomain_maintainer_ids", maxlength: 4000, cols: 400 %>
+  </div>
+  <br>
+  <div class="input-group">
+    <span class="input-group-text">Writers IDs(one per line): </span>
+    <%= text_area "newdomain_writer_ids", "", class: "form-control", id: "#{mode}_newdomain_writer_ids", maxlength: 4000, cols: 400 %>
+  </div>
+  <br>
+  <span class="input-group-text">Public? (Applies solely to top-level domains): </span>
+  <%= f.check_box :public_flag, class: "form-control", id: "#{mode}_newdomain_public_flag" %>
+  <br>
+  <br>
+  <%= submit_tag 'Submit' , class: 'btn btn-primary btn-block', name: "newdomain_submit", id: "#{mode}_newdomain_submit"%>
+<% end %>
