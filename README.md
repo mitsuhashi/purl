@@ -319,8 +319,17 @@ $ ./run_migrate_in_host.sh
 == 20190209140317 AddColumnIDsToUserHistoryInfo: migrated (0.0011s) ===========
 $
 ```
-## 3. 起動確認
+### 最初のログインユーザを登録する
+```
+$ ./first_user.sh
+INSERT 0 1
+$
+```
 
+## 3. 起動確認
+```
 $ curl -LI http://localhost:13000 -o /dev/null -w '%{http_code}\n' -s
 200
 $
+ブラウザから最初のログインユーザでログインする
+```
