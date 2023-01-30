@@ -22,7 +22,7 @@ $ docker-compose ps
 ----------------------------------------------------------------------------------------------------
 purl_db           docker-entrypoint.sh postgres   Up      0.0.0.0:15432->5432/tcp,:::15432->5432/tcp
 purl_web_apache   /run_in_container.sh            Up      0.0.0.0:13000->3000/tcp,:::13000->3000/tcp
-[mitsuhashi@vs55 purl]$
+$
 ```
 
 ### 2. purl_dbにpostgresqlデータベースを作成
