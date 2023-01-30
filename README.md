@@ -340,3 +340,31 @@ $ curl -LI http://localhost:13000 -o /dev/null -w '%{http_code}\n' -s
 $
 ブラウザから最初のログインユーザでログインする
 ```
+
+## 4. バックアップとリストア
+### postgresqlのバックアップスクリプト
+```
+$ pwd
+/opt/purl/purl_backup/postgresql
+$ cat /opt/purl/purl_backup/postgresql/purl_dev_dump.sh
+#!/bin/bash
+SUF=`date "+%Y%m%d%H%M%S"`
+FILENAME="purl_dev_"$SUF".dmp"
+BKUPDIR="."
+docker exec -it purl_db pg_dump -a -d purl_dev -U postgres > "$BKUPDIR/$FILENAME"
+```
+### postgresqlのリストアスクリプト
+3.起動確認までのインストール手順を実行した後、以下の手順でpostgresqlのDMP_FILEをインポートする。
+```
+$ cat /opt/purl/purl_backup/postgresql/purl_dev_restore.sh
+DMP_FILE="purl_dev_20200207171015.dmp"
+
+docker exec -it purl_db psql -U postgres -c "drop database purl_dev;"
+docker exec -it purl_db psql -U postgres -c "create database purl_dev;"
+
+../../run_migrate_in_host.sh
+
+docker cp ${DMP_FILE} purl_db:/tmp/
+docker exec -it purl_db /bin/bash -c "psql -U postgres purl_dev < /tmp/${DMP_FILE}"
+$
+```
