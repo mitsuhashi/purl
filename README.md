@@ -44,7 +44,7 @@ $ docker exec -it purl_db psql -U postgres -l
 ```
 #### スキーマー(各テーブル,ビュー等のオブジェクト)の作成
 ```
-[mitsuhashi@vs55 purl]$ ./run_migrate_in_host.sh
+$ ./run_migrate_in_host.sh
 == 20190121053606 DeviseCreateUsers: migrating ================================
 -- create_table(:users)
    -> 0.0056s
