@@ -319,6 +319,13 @@ $ ./run_migrate_in_host.sh
 == 20190209140317 AddColumnIDsToUserHistoryInfo: migrated (0.0011s) ===========
 $
 ```
+
+### 初期データー(seed.rb)の登録
+```
+$ ./run_import_seed.sh
+$
+```
+
 ### 最初のログインユーザを登録する
 ```
 $ ./first_user.sh
