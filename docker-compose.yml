@@ -22,7 +22,7 @@ services:
     image: "rails_for_purl_apache"
     container_name: "purl_web_apache"
     ports:
-      - "13000:3000"
+      - "80:3000"
     restart: unless-stopped
     volumes:
       - "$PWD/contents:/opt/rails_5.2.2/purl"
