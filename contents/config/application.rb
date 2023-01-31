@@ -18,5 +18,8 @@ module Purl
 
     #data-disable-withを無効化
     config.action_view.automatically_disable_submit_tag = false
+
+    # disable forgery protection
+    config.action_controller.allow_forgery_protection = false
   end
 end
